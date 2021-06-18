@@ -29,3 +29,22 @@ If your user UID is different from 1000 make sure HOST_UID env var it's correctl
 ## License
 
 The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+Php laravel 框架（api、排程），前端搭配vue.js，資料庫使用mysql
+（可上網找example套用，API、排程邏輯、ＤＢ資料表自己寫）
+使用docker compose 開發
+
+玩家維護功能
+（新增、查詢，玩家帳號、名稱、幣別）
+
+遊戲維護功能
+（新增、修改、查詢，
+遊戲繁簡英名稱、代號、遊戲類型）
+
+注單查詢功能
+（搜尋條件-可依日期[同一天不同時段]、依局號）
+顯示欄位-注單編號、下注時間、遊戲名稱、會員帳號、幣別、投注額、派彩、局號[多筆注單對應到同一局號]
+
+查看每日注單結算報表功能
+（需使用排程每日結算，搜尋條件-日期）
+顯示欄位-遊戲分類[slot、poker、fish]、總單量、總投注、總派彩
