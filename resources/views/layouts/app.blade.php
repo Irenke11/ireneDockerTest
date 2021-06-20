@@ -32,11 +32,24 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- 功能入口 -->
                     <!-- Left Side Of Navbar -->
+                    @guest
+                    @else
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('players') }}"> {{ __('PlayerPage')  }}</a>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ __('playerPage')  }} <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('players') }}">
+                                    {{ __('playersManagement') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('addPlayer') }}">
+                                    {{ __('addPlayer') }}
+                                </a>
+                            </div>
                         </li>
                     </ul>
+                    @endguest
                     <!-- 功能入口 -->
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

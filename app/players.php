@@ -19,9 +19,16 @@ class players extends Model
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public static function getAllInfo($sortBy, $orderBy, $searchValue){
+        $Players = Players::orderBy($sortBy, $orderBy)
+                        ->distinct();  
+        if (isset($searchValue)) {
+            $Players->orwhere("name", 'like', '%'.$searchValue.'%') 
+                ->orwhere('playerId', 'like', '%'.$searchValue.'%')
+                ->orwhere('account', 'like', '%'.$searchValue.'%');
+        }    
 
-    public static function getAllInfo(){
-        $Players = Players::all();
         return $Players;
     }
 
@@ -42,6 +49,7 @@ class players extends Model
                                 ->distinct()
                                 ->get();
         }
+     
         return $PlayersearchInfo;
     }
 

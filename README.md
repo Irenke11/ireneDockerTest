@@ -48,3 +48,10 @@ Php laravel 框架（api、排程），前端搭配vue.js，資料庫使用mysql
 查看每日注單結算報表功能
 （需使用排程每日結算，搜尋條件-日期）
 顯示欄位-遊戲分類[slot、poker、fish]、總單量、總投注、總派彩
+
+
+npm i laravel-vue-datatable  
+npm uninstall laravel-vue-datatable  
+composer require jamesdordoy/laravelvuedatatable
+php artisan db:seed --class=PlayersSeeder
+<players-content :data="{{ $searchPlayerInfo }}"></players-content> 寫法

@@ -6,7 +6,11 @@ use App\players;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Container\Container;
+use Illuminate\Pagination\LengthAwarePaginator;
 class PlayersController extends Controller
 {
     /**
@@ -16,11 +20,29 @@ class PlayersController extends Controller
      */
     public function index(Request $request)
     {
-        $data['searchPlayerInfo']=Players::searchPlayerInfo($request->search);
-        $data['getAllInfo']=Players::getAllInfo();
-        return view('Backend.players',$data);
+        return view('backend.players');
     }
+    public function playersData(Request $request)
+    {
+        $length = $request->input('length');
+        $sortBy = $request->input('column');
+        $orderBy = $request->input('dir');
+        $searchValue = $request->input('search');
+        $currency = $request->input('currency');
+        $query = Players::getAllInfo($sortBy, $orderBy, $searchValue);
+        if (isset($currency)) {
+            $query->where("currency","=", $currency);
+        }
+        $data = $query->paginate($length);
+        return new DataTableCollectionResource($data);
 
+        // $data=Players::getAllInfo($request);
+        // return print_r($data,1);
+    }
+    public function addPlayer(Request $request)
+    {
+        return view('backend.addPlayer');
+    }
     /**
      * Show the form for creating a new resource.
      *
