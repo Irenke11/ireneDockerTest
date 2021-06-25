@@ -3,11 +3,12 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
- import Vue from 'vue'
- import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
- import 'bootstrap/dist/css/bootstrap.css'
+import Vue from 'vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import DataTable from 'laravel-vue-datatable';
+import DataTable from 'laravel-vue-datatable'
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -32,8 +33,16 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+//players
 Vue.component('players-content', require('./backend/players.vue').default);
 Vue.component('addplayer-content', require('./backend/addPlayer.vue').default);
+//games
+Vue.component('games-content', require('./backend/games.vue').default);
+Vue.component('editgame-content', require('./backend/editGame.vue').default);
+Vue.component('addgame-content', require('./backend/addGame.vue').default);
+//bets
+Vue.component('bets-content', require('./backend/bets.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

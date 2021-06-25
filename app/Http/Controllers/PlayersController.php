@@ -11,6 +11,10 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Container\Container;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\MessageBag;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Validation\ValidationException;
+
 class PlayersController extends Controller
 {
     /**
@@ -29,9 +33,17 @@ class PlayersController extends Controller
         $orderBy = $request->input('dir');
         $searchValue = $request->input('search');
         $currency = $request->input('currency');
+        $playerId = $request->input('playerId');
         $query = Players::getAllInfo($sortBy, $orderBy, $searchValue);
+        if (isset($searchValue)) {
+            $query->where("name", 'like', '%'.$searchValue.'%')
+            ->orwhere('account', 'like', '%'.$searchValue.'%');
+        }
         if (isset($currency)) {
             $query->where("currency","=", $currency);
+        }
+        if (isset($playerId)) {
+            $query->where("playerId","=", $playerId);
         }
         $data = $query->paginate($length);
         return new DataTableCollectionResource($data);
@@ -43,69 +55,35 @@ class PlayersController extends Controller
     {
         return view('backend.addPlayer');
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function addPlayerData(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\players  $players
-     * @return \Illuminate\Http\Response
-     */
-    public function show(players $players)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\players  $players
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(players $players)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\players  $players
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, players $players)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\players  $players
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(players $players)
-    {
-        //
+        // try {
+            $validator = $request->validate([  
+                'account' => ['required', 'string', 'max:255',"unique:players"],
+                'name' => ['required', 'string', 'max:255',"unique:players"],
+                'password' => ['required', 'string', 'min:6'], 
+                'currency' => ['required', 'string'],
+            ]);
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'msg'    => 'Okay',
+        //     ], 201);
+        // }
+        // catch (ValidationException $exception) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'msg'    => 'Error',
+        //         'errors' => $exception->errors(),
+        //     ], 422);
+        // }
+        $Players = new Players;
+        $Players->account   = $request->account;
+        $Players->name      = $request->name;
+        $Players->password  = $request->password;
+        $Players->currency  = $request->currency;
+        $Players->save();
+        return $Players;
     }
 }
+

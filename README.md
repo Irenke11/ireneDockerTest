@@ -53,5 +53,7 @@ Php laravel 框架（api、排程），前端搭配vue.js，資料庫使用mysql
 npm i laravel-vue-datatable  
 npm uninstall laravel-vue-datatable  
 composer require jamesdordoy/laravelvuedatatable
-php artisan db:seed --class=PlayersSeeder
+php artisan migrate
+php artisan db:seed --class=BetsSeeder
+php artisan make:model bets --all 可以用这个一次全健好
 <players-content :data="{{ $searchPlayerInfo }}"></players-content> 寫法

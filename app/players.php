@@ -23,12 +23,6 @@ class players extends Model
     public static function getAllInfo($sortBy, $orderBy, $searchValue){
         $Players = Players::orderBy($sortBy, $orderBy)
                         ->distinct();  
-        if (isset($searchValue)) {
-            $Players->orwhere("name", 'like', '%'.$searchValue.'%') 
-                ->orwhere('playerId', 'like', '%'.$searchValue.'%')
-                ->orwhere('account', 'like', '%'.$searchValue.'%');
-        }    
-
         return $Players;
     }
 
@@ -51,6 +45,10 @@ class players extends Model
         }
      
         return $PlayersearchInfo;
+    }
+    public static function getAllPlayers(){
+        $PlayerInfo = Players::select('playerId')->get();
+        return $PlayerInfo;
     }
 
     public static function getPlayerInfoById($playerId){
