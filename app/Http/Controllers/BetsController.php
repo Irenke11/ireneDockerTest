@@ -31,23 +31,39 @@ class BetsController extends Controller
         $length = $request->input('length');
         $sortBy = $request->input('column');
         $orderBy = $request->input('dir');
+
         $bureauNo = $request->input('bureauNo');
         $datepicker = $request->input('datepicker');
         $startTime = $request->input('startTime');
         $endTime = $request->input('endTime');
-        $Daytime=[];
-        $query = bets::getAllInfo($sortBy, $orderBy,$Daytime);
-        if (isset($bureauNo)) {
-            $query->where("bureauNo", '=', $bureauNo);
-        }
-        if (isset($datepicker)) {
-            if (isset($startTime) & isset($endTime)) {
-                $query->whereBetween('betTime', [$datepicker." ".$startTime, $datepicker.' '.$endTime]);
-            }else{
-                $query->whereBetween('betTime', [$datepicker, $datepicker.' 23:59:59']);
-            }
-        }
+        $currency = $request->input('currency');
+        $betId = $request->input('betId');
+        $playerId = $request->input('playerId');
 
+        $datevalue["currency"]=$currency;
+        $datevalue["bureauNo"]=$bureauNo;
+        $datevalue["betId"]=$betId;
+        $datevalue["playerId"]=$playerId;
+        $datevalue["startTime"]=$startTime;
+        $datevalue["endTime"]=$endTime;
+        $datevalue["datepicker"]=$datepicker;
+        $query = bets::getAllInfo($sortBy, $orderBy,$datevalue);
+        // if (isset($bureauNo)) {
+        //     $query->where("bureauNo", '=', $bureauNo);
+        // }
+        // if (isset($betId)) {
+        //     $query->where("betId", '=', $betId);
+        // }
+        // if (isset($currency)) {
+        //     $query->where("currency", '=', $currency);
+        // }
+        // if (isset($datepicker)) {
+        //     if (isset($startTime) & isset($endTime)) {
+        //         $query->whereBetween('betTime', [$datepicker." ".$startTime, $datepicker.' '.$endTime]);
+        //     }else{
+        //         $query->whereBetween('betTime', [$datepicker, $datepicker.' 23:59:59']);
+        //     }
+        // }
         $data = $query->paginate($length);
         return new DataTableCollectionResource($data);
 

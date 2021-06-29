@@ -34,6 +34,13 @@
                                     placeholder="Search betId">
                             </div>
                             <div class="col">
+                                <input
+                                    name="name"
+                                    class="form-control"
+                                    v-model="tableFilters.filters.playerId"
+                                    placeholder="Search playerId">
+                            </div>
+                            <div class="col">
                                 <select
                                     v-model="tableFilters.filters.currency"
                                     class="form-control">
@@ -47,9 +54,12 @@
                         <div class="row mb-2">
                             <div class="col-md-4">
                                 <!-- <label for="datepicker-sm">Small date picker</label> -->
-                                <b-form-datepicker v-model="filters.datepicker"   id="datepicker" locale="en" class="mb-2"    today-button
-      reset-button
-      close-button></b-form-datepicker>
+                                <b-form-datepicker v-model="filters.datepicker"   
+                                id="datepicker" locale="en" class="mb-2"    
+                                today-button
+                                reset-button
+                                close-button
+                                ></b-form-datepicker>
                             </div>
                             <div class="col-md-3">
                                 <b-form-timepicker v-model="filters.startTime" locale="en"></b-form-timepicker>
@@ -92,18 +102,23 @@
             startTime: '',
             endTime: '',
             betId: '',
+            playerId: '',
             // datepicker: new Date(today),
             // startTime:"00:00:00",
             // endTime:"23:59:59",
         },
         columns: [
-          { name: 'betId', label: 'betId', orderable: true},
-          { name: 'gameId', label: 'gameId', orderable: true},
-          { name: 'playerId', label: 'playerId', orderable: true},
-          { name: 'amount', label: 'amount', orderable: true},
-          { name: 'payout', label: 'payout', orderable: true},
-          { name: 'bureauNo', label: 'bureauNo', orderable: true},
-          { name: 'betTime', label: 'betTime', orderable: true},
+            { name: 'betId', label: 'betId', orderable: true},
+            { name: 'bureauNo', label: 'bureauNo', orderable: true},
+            { name: 'gameName', label: 'gameName', orderable: true},
+            { name: 'playerId', label: 'playerId', orderable: true},
+            { name: 'currency', label: 'currency', orderable: true},
+            { name: 'betTime', label: 'betTime', orderable: true},
+            { name: 'amount', label: 'amount', orderable: true},
+            { name: 'payout', label: 'payout', orderable: true},
+            { name: 'profit', label: 'profit', orderable: true,
+                transform: ({data, name}) => `${data['payout']-data['amount']}`,
+            },
         ],
       }
     }

@@ -42,6 +42,8 @@ Vue.component('editgame-content', require('./backend/editGame.vue').default);
 Vue.component('addgame-content', require('./backend/addGame.vue').default);
 //bets
 Vue.component('bets-content', require('./backend/bets.vue').default);
+//dailyBets
+Vue.component('dailybets-content', require('./backend/dailyBets.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

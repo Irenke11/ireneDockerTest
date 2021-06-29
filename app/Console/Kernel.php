@@ -4,6 +4,10 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Bets;
+use App\dailyBets as daily;
+use Carbon\Carbon;
+use App\timeTest;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +17,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\dailyBets::class,
+        // \App\Console\Commands\dailyBet::class,
     ];
 
     /**
@@ -25,7 +30,41 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')
-        //          ->hourly();
+        //          ->everyThirtyMinutes();
+        // error_log("7777777777schedule7777777777777");
+        $schedule->command('dailyBets')->everyMinute();
+        // $schedule->call(function () {
+        //     $day =   date("Y/m/d");
+        //     // $day = Carbon::now();
+        //     $timeTest = new timeTest;
+        //     $timeTest->settingTime  = $day;
+        //     $timeTest->save();
+        // })->everyMinute();
+
+
+        // $schedule->command('dailySettlement')->daily()->withoutOverlapping(10);
+        
+        // $schedule->call(function () {
+        //     // error_log($dailyBets);
+        //     $day = Carbon::yesterday();//昨天
+        //     $dayTime['startTime'] = Carbon::parse($day)->toDateTimeString();            //2021-06-25 00:00:00
+        //     $dayTime['endTime'] = Carbon::parse($day)->endOfday()->toDateTimeString();  //2021-06-25 23:59:59
+        //     // $dayTime['startTime'] = "2021-06-25 00:00:00";    //test
+        //     // $dayTime['endTime'] ="2021-06-25 23:59:59";  //test
+        //     $data['gameTypeList'] = config('setting.gametype');//遊戲類型列表
+        //     foreach ($data['gameTypeList'] as $gameType ){
+        //         // $countSchedule = daily::checkSchedule($dayTime,$gameType); //是否已存在
+        //         // if($countSchedule == 0 ){
+        //             $dailyBets = daily::dailyBets($dayTime,$gameType);
+        //             $dailyBets['betsDay']=Carbon::parse($day)->toDateString();
+        //             $dailyBets['gameType']=$gameType;
+                    
+        //             $Schedule = daily::addSchedule($dailyBets);
+        //         // }
+        //     }
+        //     // DB::table('recent_users')->delete();
+        // })->everyMinute();
+    
     }
 
     /**

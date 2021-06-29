@@ -33,8 +33,9 @@ Route::get('/GET/betsData', [App\Http\Controllers\BetsController::class, 'betsDa
     // Route::post('/POST/addBet', [App\Http\Controllers\BetsController::class, 'addBet'])->name('addBet');//新增
     // Route::post('/POST/searchBets', [App\Http\Controllers\BetsController::class, 'index'])->name('searchBets'); //查询
     // Route::get('/GET/bets/{time}/{bureauNo}', [App\Http\Controllers\BetsController::class, 'index'])->name('bets');//页面显示+查询
-Route::get('/GET/daily', [App\Http\Controllers\DailyController::class, 'index'])->name('daily');//页面显示+查询
+Route::get('/GET/dailyBets', [App\Http\Controllers\DailyBetsController::class, 'index'])->name('dailyBets');//页面显示+查询
+Route::get('/GET/dailyBetsData', [App\Http\Controllers\DailyBetsController::class, 'dailyBetsData'])->name('dailyBetsData');//數據API
     // Route::post('/POST/daily', [App\Http\Controllers\DailyController::class, 'addDaily'])->name('daily');//結算(排程)
     // Route::get('/GET/daily/{day}', [App\Http\Controllers\DailyController::class, 'index'])->name('daily');//页面显示+查询
-    Route::post('/POST/addDaily', [App\Http\Controllers\DailyController::class, 'addDaily'])->name('addDaily');
-    Route::post('/POST/searchDaily', [App\Http\Controllers\DailyController::class, 'index'])->name('searchDaily');
+    // Route::post('/POST/addDaily', [App\Http\Controllers\DailyController::class, 'addDaily'])->name('addDaily');
+    // Route::post('/POST/searchDaily', [App\Http\Controllers\DailyController::class, 'index'])->name('searchDaily');

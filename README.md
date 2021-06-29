@@ -49,11 +49,34 @@ Php laravel 框架（api、排程），前端搭配vue.js，資料庫使用mysql
 （需使用排程每日結算，搜尋條件-日期）
 顯示欄位-遊戲分類[slot、poker、fish]、總單量、總投注、總派彩
 
-
+docker路径：cd /c/Users/Administrator/Downloads/new/laravel-nginx-mysql-docker
+datatable用了這個:https://jamesdordoy.github.io/laravel-vue-datatable/?p=/laravel/controller-resource
 npm i laravel-vue-datatable  
 npm uninstall laravel-vue-datatable  
 composer require jamesdordoy/laravelvuedatatable
-php artisan migrate
-php artisan db:seed --class=BetsSeeder
-php artisan make:model bets --all 可以用这个一次全健好
+
+php artisan migrate  建立
+php artisan migrate:rollback 重置
+php artisan db:seed --class=BetsSeeder 
+php artisan make:model dailyBets --all 可以用这个一次全健好
 <players-content :data="{{ $searchPlayerInfo }}"></players-content> 寫法
+------排程----- 
+* * * * * cd /laravel-nginx-mysql-docker && php artisan schedule:run >> /dev/null 2>&1
+* * * * * php /laravel-nginx-mysql-docker/artisan schedule:run >> /dev/null 2>&1
+* * * * * cd \Users\Administrator\Downloads\new\laravel-nginx-mysql-docker && php artisan schedule:run >> /dev/null 2>&1
+* * * * * php artisan schedule:run >> /dev/null 2>&1
+php artisan crontab -l 查看排程
+apk add --update busybox-suid
+php artisan crontab -e 編輯排程
+php artisan schedule:list  列表
+------排程----- 
+laravelnginxmysqldocker_php_1
+docker exec -it laravelnginxmysqldocker_php_1 bash
+docker exec -it laravelnginxmysqldocker_scheduler_1 bash
+docker logs -f slot-wagersinfo-client-6bc54dfc7f-qslsj
+
+docker run --name=laravelnginxmysqldocker_scheduler_1 -d -it laravelnginxmysqldocker_scheduler_1 bash
+
+php artisan migrate
+php artisan db:seed
+php artisan command:dailyBets
