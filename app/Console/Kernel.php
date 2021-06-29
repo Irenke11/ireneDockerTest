@@ -31,15 +31,16 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->everyThirtyMinutes();
-        // error_log("7777777777schedule7777777777777");
-        $schedule->command('dailyBets')->everyMinute();
-        // $schedule->call(function () {
-        //     $day =   date("Y/m/d");
-        //     // $day = Carbon::now();
-        //     $timeTest = new timeTest;
-        //     $timeTest->settingTime  = $day;
-        //     $timeTest->save();
-        // })->everyMinute();
+        // 
+        $schedule->command('dailyBets')->daily();
+        $schedule->call(function () {
+            $day =   date("Y/m/d H:i:s");
+            // error_log($day);
+            // $day = Carbon::now();
+            $timeTest = new timeTest;
+            $timeTest->settingTime  = $day;
+            $timeTest->save();
+        })->daily();
 
 
         // $schedule->command('dailySettlement')->daily()->withoutOverlapping(10);
