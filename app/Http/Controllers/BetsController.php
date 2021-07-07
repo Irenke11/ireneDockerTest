@@ -26,48 +26,20 @@ class BetsController extends Controller
     {
         return view('backend.bets');
     }
-    public function betsData(Request $request)
+    public function allData(Request $request)
     {
-        $length = $request->input('length');
-        $sortBy = $request->input('column');
-        $orderBy = $request->input('dir');
-
-        $bureauNo = $request->input('bureauNo');
-        $datepicker = $request->input('datepicker');
-        $startTime = $request->input('startTime');
-        $endTime = $request->input('endTime');
-        $currency = $request->input('currency');
-        $betId = $request->input('betId');
-        $playerId = $request->input('playerId');
-
-        $datevalue["currency"]=$currency;
-        $datevalue["bureauNo"]=$bureauNo;
-        $datevalue["betId"]=$betId;
-        $datevalue["playerId"]=$playerId;
-        $datevalue["startTime"]=$startTime;
-        $datevalue["endTime"]=$endTime;
-        $datevalue["datepicker"]=$datepicker;
-        $query = bets::getAllInfo($sortBy, $orderBy,$datevalue);
-        // if (isset($bureauNo)) {
-        //     $query->where("bureauNo", '=', $bureauNo);
-        // }
-        // if (isset($betId)) {
-        //     $query->where("betId", '=', $betId);
-        // }
-        // if (isset($currency)) {
-        //     $query->where("currency", '=', $currency);
-        // }
-        // if (isset($datepicker)) {
-        //     if (isset($startTime) & isset($endTime)) {
-        //         $query->whereBetween('betTime', [$datepicker." ".$startTime, $datepicker.' '.$endTime]);
-        //     }else{
-        //         $query->whereBetween('betTime', [$datepicker, $datepicker.' 23:59:59']);
-        //     }
-        // }
+        $length = $request->input('length')??"100";
+        $sortBy = $request->input('column')??"betId";
+        $orderBy = $request->input('dir')??"desc";
+        $searchValue["currency"]=$request->input('currency');
+        $searchValue["bureauNo"]=$request->input('bureauNo');
+        $searchValue["betId"]= $request->input('betId');
+        $searchValue["playerId"]=$request->input('playerId');
+        $searchValue["startTime"]=$request->input('startTime');
+        $searchValue["endTime"]=$request->input('endTime');
+        $searchValue["datepicker"]= $request->input('datepicker');
+        $query = bets::getAllInfo($sortBy, $orderBy,$searchValue);
         $data = $query->paginate($length);
         return new DataTableCollectionResource($data);
-
-        // $data=bets::getAllInfo($request);
-        // return print_r($data,1);
     }
 }

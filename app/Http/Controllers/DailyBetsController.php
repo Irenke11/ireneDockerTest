@@ -32,27 +32,20 @@ class DailyBetsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function dailyBetsData(Request $request)
+    public function allData(Request $request)
     {
         $length = $request->input('length');
         $sortBy = $request->input('column');
         $orderBy = $request->input('dir');
-        $searchValue = $request->input('search');
-        // $gameType = $request->input('gameType');
-        // $gameId = $request->input('gameId');
-        $query = dailyBets::getAllInfo($sortBy, $orderBy, $searchValue);
-        // error_log(json_encode($query,true));
-        // if (isset($searchValue)) {
-        //     $query->where("gameName", 'like', '%'.$searchValue.'%');
-        // }
-        // if (isset($gameType)) {
-        //     $query->where("gameType","=", $gameType);
-        // }
-        // if (isset($gameId)) {
-        //     $query->where("gameId","=", $gameId);
-        // }
 
-        $data = $query->paginate($length);    
+        $searchValue["startTime"]=$request->input('startTime');
+        $searchValue["endTime"]=$request->input('endTime');
+        $searchValue["datepicker"]=$request->input('datepicker');
+
+        $query = dailyBets::getAllInfo($sortBy, $orderBy, $searchValue);
+
+        $data = $query->paginate($length); 
+           
         return new DataTableCollectionResource($data);
 
     }

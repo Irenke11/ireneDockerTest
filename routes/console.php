@@ -22,21 +22,24 @@ Artisan::command('inspire', function () {
 })->describe(Carbon::now());
 
 Artisan::command('dailyBets', function () {
-    // 
-    //之後記得改成call contrller
-    // $dayTime['startTime'] = "2021-06-26 00:00:00"; 
-    // $dayTime['endTime'] ="2021-06-26 23:59:59";
-    $day = Carbon::yesterday();//昨天
-    $dayTime['startTime'] = Carbon::parse($day)->toDateTimeString();            //2021-06-25 00:00:00
-    $dayTime['endTime'] = Carbon::parse($day)->endOfday()->toDateTimeString();  //2021-06-25 23:59:59
+    $dayTime['startTime'] = Carbon::yesterday();  //2021-06-25 00:00:00
+    $dayTime['endTime'] = Carbon::yesterday()->endOfday();  //2021-06-25 23:59:59       
     $data['gameTypeList'] = config('setting.gametype');//遊戲類型列表
     foreach ($data['gameTypeList'] as $gameType ){
-        // $countSchedule = DailyBets::checkSchedule($dayTime,$gameType); //是否已存在
-        // if($countSchedule == 0 ){
+        $countSchedule = DailyBets::checkSchedule($dayTime,$gameType); //是否已存在
+        if($countSchedule == 0 ){
             $dailyBets = DailyBets::dailyBets($dayTime,$gameType);
-            $dailyBets['betsDay']=Carbon::parse($day)->toDateString();
+            $dailyBets['betsDay']=Carbon::yesterday();
             $dailyBets['gameType']=$gameType;
             $Schedule = DailyBets::addSchedule($dailyBets);
-        // }
+        }
+    }
+    $gameType="All";
+    $countSchedule = DailyBets::checkSchedule($dayTime,$gameType); //是否已存在
+    if($countSchedule == 0 ){
+        $dailyBetsAll = DailyBets::dailyBetsAll($dayTime);
+        $dailyBetsAll['betsDay']=Carbon::yesterday();
+        $dailyBetsAll['gameType']=$gameType;
+        $Schedule = DailyBets::addSchedule($dailyBetsAll);
     }
 });

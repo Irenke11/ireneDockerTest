@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Bets;
+use App\bets as Bets;
 
 class BetsSeeder extends Seeder
 {
@@ -12,6 +12,6 @@ class BetsSeeder extends Seeder
      */
     public function run()
     {
-        factory(Bets::class, 50)->create();
+        factory(Bets::class, 150)->create();
     }
 }

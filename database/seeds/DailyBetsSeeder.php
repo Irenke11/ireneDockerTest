@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\DailyBets;
+use App\dailyBets as DailyBets;
 class DailyBetsSeeder extends Seeder
 {
     /**

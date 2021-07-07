@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Response;
 
 class players extends Model
 {
@@ -21,31 +22,44 @@ class players extends Model
     ];
     
     public static function getAllInfo($sortBy, $orderBy, $searchValue){
-        $Players = Players::orderBy($sortBy, $orderBy)
-                        ->distinct();  
-        return $Players;
-    }
-
-    public static function searchPlayerInfo($search){
-
-        if(isset($search)){
-            foreach($search as $name => $value){
-                if(isset($value)){
-                    $PlayersearchInfo = Players::where($name, 'like', '%'.$value.'%')
-                    ->distinct()
-                    ->get();  
-                }
-            }
-        }else{
-        $PlayersearchInfo = Players::where('name', 'like', '%'.$search['name'].'%')
-                                ->orwhere('playerId', 'like', '%'.$search['playerId'].'%')
-                                ->orwhere('account', 'like', '%'.$search['account'].'%')
-                                ->distinct()
-                                ->get();
+        $query = Players::orderBy($sortBy, $orderBy)->distinct();  
+        if (isset($searchValue["search"])) {
+            $query->where("name", 'like', '%'.$searchValue["search"].'%')
+            ->orwhere('account', 'like', '%'.$searchValue["search"].'%');
         }
-     
-        return $PlayersearchInfo;
+        if (isset($searchValue["currency"])) {
+            $query->where("currency","=", $searchValue["currency"]);
+        }
+        if (isset($searchValue["playerId"])) {
+            $query->where("playerId","=", $searchValue["playerId"]);
+        }
+        return $query;
     }
+
+    public static function addPlayer($request){
+        $query = new Players;
+        $query->account   = $request->account;
+        $query->name      = $request->name;
+        $query->password  = $request->password;
+        $query->currency  = $request->currency;
+        $query->save();
+        return $query;
+    }
+
+    public static function editPlayerById($request){
+        $query = Players::where("playerId","=",$request['playerId'])->first();
+        $query->account   = $request->account;
+        $query->name      = $request->name;
+        $query->password  = $request->password;
+        $query->currency  = $request->currency;
+        $query->save();
+        return $query;
+    }
+    public static function getAll(){
+        $PlayerInfo = Players::all();
+        return $PlayerInfo;
+    }
+
     public static function getAllPlayers(){
         $PlayerInfo = Players::select('playerId')->get();
         return $PlayerInfo;

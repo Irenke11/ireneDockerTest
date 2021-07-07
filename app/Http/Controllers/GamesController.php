@@ -32,74 +32,79 @@ class GamesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function gamesData(Request $request)
+    public function allData(Request $request)
     {
-        $length = $request->input('length');
-        $sortBy = $request->input('column');
-        $orderBy = $request->input('dir');
-        $searchValue = $request->input('search');
-        $gameType = $request->input('gameType');
-        $gameId = $request->input('gameId');
-        $query = Games::getAllInfo($sortBy, $orderBy, $searchValue);
-        // error_log(json_encode($query,true));
-        if (isset($searchValue)) {
-            $query->where("gameName", 'like', '%'.$searchValue.'%');
-        }
-        if (isset($gameType)) {
-            $query->where("gameType","=", $gameType);
-        }
-        if (isset($gameId)) {
-            $query->where("gameId","=", $gameId);
-        }
+        $length = $request->input('length')??100;
+        $sortBy = $request->input('column')??"gameId";
+        $orderBy = $request->input('dir')??"desc";
+        $searchValue["gameType"]=$request->input('gameType');
+        $searchValue["gameId"]=$request->input('gameId');
+        $searchValue["gameName"]=$request->input('search');
+        $query = games::getAllInfo($sortBy, $orderBy, $searchValue);
         $data = $query->paginate($length);
         return new DataTableCollectionResource($data);
-
     }
 
     public function editGame(Request $request)
     {
-        //   error_log(json_encode($request,true));
-        $gameId = $request->input('gameId');
-   
-            if (isset($gameId)) {
-                $data["data"] = Games::getInfoById($gameId);
-                $data["edit"]=true;//修改
-            }else{
-                $data["data"]="";   
-                $data["edit"]=false;//新增
-            }
+        $gameId = request()->segment(count(request()->segments()));//id
+        $data["data"] = games::getInfoById($gameId);
+        $data["edit"]=true;//修改
+        
         return view('backend.editGame',$data);
     }
 
-    public function editGameData(Request $request)
+    public function addGame(Request $request)
     {
-        $validator = $request->validate([  
-            'gameId' => ['required', 'max:20'],
-            'gameNameEn' => ['required', 'string', 'max:255'],
-            'gameNameCn' => ['required', 'string', 'max:255'],
-            'gameNameTw' => ['required', 'string', 'max:255'],
-            'gameType' => ['required', 'string', 'max:6'], 
-            'status' => ['required'],
-        ]);
-        $gameName=[];
-        $gameName['cn']=$request->gameNameCn;
-        $gameName['tw']=$request->gameNameTw;
-        $gameName['en']=$request->gameNameEn;
-        $gameName=json_encode($gameName);
-        $request->merge(['gameName' => $gameName]);
+        $data["data"] ="";
+        $data["edit"]=false;//新增
+        return view('backend.editGame',$data);
+    }
+    
+    public function editData(Request $request)
+    {
+        try {
+            $validator = $request->validate([  
+                // 'gameId' => ['required', 'max:20'],
+                'gameNameEn' => ['required', 'string', 'max:255'],
+                'gameNameCn' => ['required', 'string', 'max:255'],
+                'gameNameTw' => ['required', 'string', 'max:255'],
+                'gameType' => ['required', 'string', 'max:6'], 
+                'status' => ['required'],
+            ]);
+            $gameName=[];
+            $gameName['cn']=$request->gameNameCn;
+            $gameName['tw']=$request->gameNameTw;
+            $gameName['en']=$request->gameNameEn;
+            $gameName=json_encode($gameName);
+            $request->merge(['gameName' => $gameName]);
 
-        $checkGames = Games::getInfoById($request->gameId);
-        if(isset($checkGames)){
-            $Games = Games::editGameById($request);//修改
-        }else{
-            $Games = Games::addGame($request);//新增
+            $checkGames = games::getInfoById($request->gameId);
+            if(isset($checkGames)){
+                $Games = games::editGameById($request);//修改
+            }else{
+                $Games = games::addGame($request);//新增
+            }
+            return response()->json([
+                'code' => '201',
+                'status' => 'success',
+                'msg'    => 'Okay',
+            ], 201);
         }
-       
-        // $Game->gameName  = $gameName;
-        // $Game->gameType  = $request->gameType;
-        // $Game->status    = $request->status;
-        // $Game->save();
-        // error_log($Games);
+        catch (ValidationException $exception) {
+            return response()->json([
+                'code' => '422',
+                'status' => 'error',
+                'msg'    => 'Error',
+                'errors' => $exception->errors(),
+            ], 422);
+        }
+
+
+
+
+
+
         return $Games;
     }
     // public function editGameById(Request $request)

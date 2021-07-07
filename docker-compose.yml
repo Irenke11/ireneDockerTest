@@ -67,15 +67,13 @@ services:
     image: mysql:5.7.22
     restart: always
     ports:
-      - "3306:3306"
+      - "33060:3306"
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: example
-      TZ: Asia/Taipei
     volumes:
       - mysql-data:/var/lib/mysql/
       - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-      - TZ=Asia/Taipei
     networks:
       - app-network
 

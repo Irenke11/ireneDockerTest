@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class bets extends Model
 {
     protected $table = 'bets';
@@ -15,31 +15,34 @@ class bets extends Model
         'payout',
     ];
 
-    public static function getAllInfo($sortBy, $orderBy,$datevalue){
-        $Bets = Bets::orderBy($sortBy, $orderBy)
-                        ->distinct();  
-        if (isset($datevalue['bureauNo'])) {
-            $Bets->where("bureauNo", '=', $datevalue['bureauNo']);
+    public static function getAllInfo($sortBy, $orderBy,$searchValue){
+        $query = Bets::orderBy($sortBy, $orderBy)
+                        ->distinct();
+        if (!isset($searchValue["datepicker"])) {
+            $searchValue["datepicker"] = Carbon::today(); 
+        } 
+        if (isset($searchValue["startTime"]) & isset($searchValue["endTime"])) {
+            $query->whereBetween('betTime', [$searchValue["datepicker"]." ".$searchValue["startTime"], $searchValue["datepicker"].' '.$searchValue["endTime"]]);
+        }else{
+            $query->whereBetween('betTime', [$searchValue["datepicker"].' 00:00:00', $searchValue["datepicker"].' 23:59:59']);
+        }  
+        if (isset($searchValue['betId'])) {
+            $query->where("betId", '=', $searchValue['betId']);
         }
-        if (isset($datevalue['betId'])) {
-            $Bets->where("betId", '=', $datevalue['betId']);
+        if (isset($searchValue['playerId'])) {
+            $query->where("playerId", '=', $searchValue['playerId']);
         }
-        if (isset($datevalue['playerId'])) {
-            $Bets->where("playerId", '=', $datevalue['playerId']);
+        if (isset($searchValue['currency'])) {
+            $query->where("currency", '=', $searchValue['currency']);
         }
-        if (isset($datevalue['currency'])) {
-            $Bets->where("currency", '=', $datevalue['currency']);
+        if (isset($searchValue['bureauNo'])) {
+            $query->where("bureauNo", '=', $searchValue['bureauNo']);
         }
-        if (isset($datevalue["datepicker"])) {
-            if (isset($datevalue["startTime"]) & isset($datevalue["endTime"])) {
-                $Bets->whereBetween('betTime', [$datevalue["datepicker"]." ".$datevalue["startTime"], $datevalue["datepicker"].' '.$datevalue["endTime"]]);
-            }else{
-                $Bets->whereBetween('betTime', [$datevalue["datepicker"], $datevalue["datepicker"].' 23:59:59']);
-            }
-        }
-
-        return $Bets;
+        return $query;
     }
-    
+    //   public static function getLastInsertId(){
+    //     $id = "SELECT LAST_INSERT_ID() INTO yourTableName;"
+    //     return $id;
+    //   }
 
 }

@@ -13,47 +13,52 @@ class games extends Model
         'gameName',
         'status',
     ];
+    
     public static function getAllInfo($sortBy, $orderBy, $searchValue){
-        $Games = Games::orderBy($sortBy, $orderBy)
+        $query = Games::orderBy($sortBy, $orderBy)
                         ->distinct();  
-        // if (isset($searchValue)) {
-        //     $Players->orwhere("name", 'like', '%'.$searchValue.'%') 
-        //         // ->orwhere('playerId', $searchValue)
-        //         ->orwhere('account', 'like', '%'.$searchValue.'%');
-        // }    
+        if (isset($searchValue["gameName"])) {
+            $query->where("gameName", 'like', '%'.$searchValue["gameName"].'%');
+        }
+        if (isset($searchValue['gameType'])) {
+            $query->where("gameType","=", $searchValue['gameType']);
+        }
+        if (isset($searchValue['gameId'])) {
+            $query->where("gameId","=", $searchValue['gameId']);
+        } 
 
-        return $Games;
+        return $query;
     }
-    public static function getInfoById($gameId){
-        $Games = Games::where("gameId","=",$gameId)->first();
-        //     $Players->orwhere("name", 'like', '%'.$searchValue.'%') 
-        //         // ->orwhere('playerId', $searchValue)
-        //         ->orwhere('account', 'like', '%'.$searchValue.'%');
-        // }    
 
-        return $Games;
+    public static function getInfoById($gameId){
+        $query = Games::where("gameId","=",$gameId)->first();
+        return $query;
     }
 
     public static function editGameById($request)
     {   
-        $Games = Games::where("gameId","=",$request['gameId'])->first();
-        $Games->gameName  =  $request->gameName;
-        $Games->gameType  = $request->gameType;
-        $Games->status    = $request->status;
-        $Games->save();
+        $query = Games::where("gameId","=",$request['gameId'])->first();
+        $query->gameName  = $request->gameName;
+        $query->gameType  = $request->gameType;
+        $query->status    = $request->status;
+        $query->save();
 
-        return $Games;
+        return $query;
     }
     public static function addGame($request)
     {   
-        $Games = new Games;
-        $Games->gameId  =  $request->gameId;
-        $Games->gameName  =  $request->gameName;
-        $Games->gameType  = $request->gameType;
-        $Games->status    = $request->status;
-        $Games->save();
+        $query = new Games;
+        $query->gameId   = $request->gameId;
+        $query->gameName = $request->gameName;
+        $query->gameType = $request->gameType;
+        $query->status   = $request->status;
+        $query->save();
 
-        return $Games;
+        return $query;
     }
 
+    public static function getAll(){
+        $query = Games::all();
+        return $query;
+    }
 }

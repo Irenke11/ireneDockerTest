@@ -69,10 +69,11 @@ php artisan crontab -l 查看排程
 apk add --update busybox-suid
 php artisan crontab -e 編輯排程
 php artisan schedule:list  列表
+php artisan schedule:run
 ------排程----- 
 laravelnginxmysqldocker_php_1
 docker exec -it laravelnginxmysqldocker_php_1 bash
-docker exec -it laravelnginxmysqldocker_scheduler_1 bash
+docker exec -it irenedockertest_php_1 bash
 docker logs -f slot-wagersinfo-client-6bc54dfc7f-qslsj
 
 docker run --name=laravelnginxmysqldocker_scheduler_1 -d -it laravelnginxmysqldocker_scheduler_1 bash

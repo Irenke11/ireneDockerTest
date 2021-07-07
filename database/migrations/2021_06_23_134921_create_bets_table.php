@@ -21,9 +21,8 @@ class CreateBetsTable extends Migration
             $table->string('playerId', 50);//會員帳號 
             $table->decimal('amount',24, 2)->unsigned();//投注額
             $table->decimal('payout',24, 2)->unsigned();//派彩
-            $table->string('bureauNo', 10); //局號
+            $table->string('bureauNo', 20); //局號
             $table->string('currency')->default("RMB");//幣別
-            
             $table->dateTime('betTime')->default(DB::raw('CURRENT_TIMESTAMP'));//下注時間
             $table->timestamps();
         });

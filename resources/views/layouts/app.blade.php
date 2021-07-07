@@ -18,12 +18,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <link rel="icon" href="{{ asset('images/maomaochong.jpg') }}" type="image/x-icon"/>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('images/maomaochong.jpg') }}" alt="" width="30" height="24" class="d-inline-block align-text-top">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -35,49 +38,49 @@
                     @guest
                     @else
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item dropdown">
+                                            <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ __('playerPage')  }} <span class="caret"></span>
+                            {{ __('Player Page')  }} <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('players') }}">
-                                    {{ __('playersManagement') }}
+                                <a class="dropdown-item" href="{{ route('allPlayers') }}">
+                                    {{ __('players Management') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('addPlayer') }}">
-                                    {{ __('addPlayer') }}
+                                    {{ __('Add Player') }}
                                 </a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ __('gamePage')  }} <span class="caret"></span>
+                            {{ __('Game Page')  }} <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('games') }}">
-                                    {{ __('gamesManagement') }}
+                                <a class="dropdown-item" href="{{ route('allGames') }}">
+                                    {{ __('Games Management') }}
                                 </a>
-                                <a class="dropdown-item" href="{{ route('editGame') }}">
-                                    {{ __('addGame') }}
-                                </a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ __('betPage')  }} <span class="caret"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('bets') }}">
-                                    {{ __('betsManagement') }}
+                                <a class="dropdown-item" href="{{ route('addGame') }}">
+                                    {{ __('Add Game') }}
                                 </a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ __('dailyBetsPage')  }} <span class="caret"></span>
+                            {{ __('Bet Page')  }} <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('dailyBets') }}">
-                                    {{ __('dailyBetManagement') }}
+                                <a class="dropdown-item" href="{{ route('allBets') }}">
+                                    {{ __('bets Management') }}
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ __('Daily Bets Page')  }} <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('allDailyBets') }}">
+                                    {{ __('Daily Bet Management') }}
                                 </a>
                             </div>
                         </li>
