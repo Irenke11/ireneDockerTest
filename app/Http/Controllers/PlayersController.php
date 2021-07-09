@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\players;
+use App\players as Players;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -25,23 +25,28 @@ class PlayersController extends Controller
      */
     public function index(Request $request)
     {
-        return view('backend.players');
+        $request["currencyList"]=config('setting.currency');
+        $request["playerInfo"]= [];
+        return view('backend.players',$request);
     }
     public function allData(Request $request)
-    {
+    {   
         $length = $request->input('length')??100;
         $sortBy = $request->input('column')??"playerId";
         $orderBy = $request->input('dir')??"desc";
         $searchValue["search"]=$request->input('search');
         $searchValue["currency"]=$request->input('currency');
         $searchValue["playerId"]=$request->input('playerId');
+        $searchValue["currencyList"]=config('setting.currency');
         $query = Players::getAllInfo($sortBy, $orderBy, $searchValue);
         $data = $query->paginate($length);
+        // $data['payload']["currencyList"]=config('setting.currency');
         return new DataTableCollectionResource($data);
     }
     public function addPlayer(Request $request)
     {
-        return view('backend.addPlayer');
+        $request["currencyList"]=config('setting.currency');
+        return view('backend.addPlayer',$request);
     }
 
     public function addData(Request $request)
@@ -53,6 +58,7 @@ class PlayersController extends Controller
                 'name' => ['required', 'string', 'min:6', 'max:20',"unique:players,name"],
                 'password' => ['required','alpha_num', 'string', 'min:6','max:20'], 
                 'currency' => ['required', 'string'],
+                'status' => ['required', 'boolean'],
             ]);
             $Players = Players::addPlayer($request); //新增
             return response()->json([
@@ -68,6 +74,22 @@ class PlayersController extends Controller
                 'errors' => $exception->errors(),
             ], 422);
         }
+    }
+
+    public function edit(Request $request)
+    {
+        $playerId=request()->segment(count(request()->segments()));
+        $request["currencyList"]=config('setting.currency');
+        $request["playerInfo"]= Players::getPlayerInfoById($playerId);
+        return view('backend.addPlayer',$request);
+    }
+    
+    public function restorePassword(Request $request)
+    { 
+            $data["playerId"]=$request->input('playerId');
+            $query=Players::restorePassword($data["playerId"]);
+            return $query;
+            // var_dump($searchValue);
     }
 }
 

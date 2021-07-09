@@ -42,6 +42,7 @@ class players extends Model
         $query->name      = $request->name;
         $query->password  = $request->password;
         $query->currency  = $request->currency;
+        $query->status    = $request->status;
         $query->save();
         return $query;
     }
@@ -52,36 +53,42 @@ class players extends Model
         $query->name      = $request->name;
         $query->password  = $request->password;
         $query->currency  = $request->currency;
+        $query->status    = $request->status;
         $query->save();
         return $query;
     }
     public static function getAll(){
-        $PlayerInfo = Players::all();
-        return $PlayerInfo;
+        $query = Players::all();
+        return $query;
     }
 
     public static function getAllPlayers(){
-        $PlayerInfo = Players::select('playerId')->get();
-        return $PlayerInfo;
+        $query = Players::select('playerId')->get();
+        return $query;
     }
 
     public static function getPlayerInfoById($playerId){
-        $PlayerInfo = Players::where('playerId', '=', $playerId)->first();
-        return $PlayerInfo;
+        $query = Players::where('playerId', '=', $playerId)->first();
+        return $query;
     }
-
+    public static function restorePassword($playerId){
+        $query = Players::where('playerId', '=', $playerId)->first();
+        $query->password  = "123456789";
+        $query->save();
+        return $query;
+    }
     public static function getPlayerInfoByAccount($account){
-        $PlayerInfo = Players::where('account', '=', $account)->get();
-        return $PlayerInfo;
+        $query = Players::where('account', '=', $account)->get();
+        return $query;
     }
 
     public static function getPlayerInfoByName($name){
-        $PlayerInfo = Players::where('name', '=', $name)->get();
-        return $PlayerInfo;
+        $query = Players::where('name', '=', $name)->get();
+        return $query;
     }
     
     public static function getPlayerInfoByCurrency($currency){
-        $PlayerInfo = Players::where('currency', '=', $currency)->get();
-        return $PlayerInfo;
+        $query = Players::where('currency', '=', $currency)->get();
+        return $query;
     }
 }

@@ -20,29 +20,44 @@ class dailyBets extends Model
     ];
     
     public static function getAllInfo($sortBy, $orderBy, $searchValue){
-        $dailyBets = dailyBets::orderBy($sortBy, $orderBy)
+        $query = dailyBets::orderBy($sortBy, $orderBy)
                         ->distinct();  
         if (!isset($searchValue["datepicker"])) {
             $searchValue["datepicker"] = Carbon::today(); 
         } 
+        if (isset($searchValue['currency'])) {
+            $query->where("currency", '=', $searchValue['currency']);
+        }
         if (isset($searchValue["startTime"]) & isset($searchValue["endTime"])) {
-            $dailyBets->whereBetween('betsDay', [$searchValue["datepicker"]." ".$searchValue["startTime"], $searchValue["datepicker"].' '.$searchValue["endTime"]]);
+            $query->whereBetween('betsDay', [$searchValue["datepicker"]." ".$searchValue["startTime"], $searchValue["datepicker"].' '.$searchValue["endTime"]]);
         }else{
-            $dailyBets->whereBetween('betsDay', [$searchValue["datepicker"].' 00:00:00', $searchValue["datepicker"].' 23:59:59']);
+            $query->whereBetween('betsDay', [$searchValue["datepicker"].' 00:00:00', $searchValue["datepicker"].' 23:59:59']);
         }
                       
-        return $dailyBets;
+        return $query;
     }
 
-    public static function checkSchedule($dayTime,$gameType){
+    public static function checkSchedule($dayTime,$gameType,$currency){
         $Dailycount = dailyBets::whereBetween('betsDay', [$dayTime["startTime"],$dayTime["endTime"]])
         ->where('gameType', '=', $gameType)
+        ->where('currency', '=', $currency)
         ->count();
         
         return $Dailycount;
     }
 
-    public static function dailyBets($dayTime,$gameType){
+    public static function dailyBets($dayTime,$gameType,$currency){
+        
+        $dailyBets= Bets::select(
+                        DB::raw('count(*) as count'),
+                        DB::raw('SUM(amount) as allAmount'),
+                        DB::raw('SUM(payout) as allPayout'),
+                        DB::raw('SUM(payout)-SUM(amount) as allProfit')
+                    )->whereBetween('betTime', [$dayTime["startTime"],$dayTime["endTime"]])->where('gameType', "=", $gameType)->where('currency', '=', $currency)->first();
+        // print("<pre>".print_r($dailyBets,true)."</pre>");
+        return $dailyBets;
+    }
+    public static function dailyBetsAll($dayTime,$currency){
         
         $dailyBets= Bets::select(
                         DB::raw('count(*) as count'),
@@ -50,21 +65,8 @@ class dailyBets extends Model
                         DB::raw('SUM(payout) as allPayout'),
                         DB::raw('SUM(payout)-SUM(amount) as allProfit')
                     )->whereBetween('betTime', [$dayTime["startTime"],$dayTime["endTime"]])
-                    ->where('gameType',"=",$gameType)
+                    ->where('currency', '=', $currency)
                     ->first();
-                    // ->join('games', 'bets.gameId', '=', 'games.gameId')
-        // print("<pre>".print_r($dailyBets,true)."</pre>");
-        return $dailyBets;
-    }
-    public static function dailyBetsAll($dayTime){
-        
-        $dailyBets= Bets::select(
-                        DB::raw('count(*) as count'),
-                        DB::raw('SUM(amount) as allAmount'),
-                        DB::raw('SUM(payout) as allPayout'),
-                        DB::raw('SUM(payout)-SUM(amount) as allProfit')
-                    )->whereBetween('betTime', [$dayTime["startTime"],$dayTime["endTime"]])->first();
-                    // ->join('games', 'bets.gameId', '=', 'games.gameId')
         // print("<pre>".print_r($dailyBets,true)."</pre>");
         return $dailyBets;
     }
@@ -73,6 +75,7 @@ class dailyBets extends Model
         $Schedule = new dailyBets;
         $Schedule->gameType  = $request->gameType;
         $Schedule->betsDay   = $request->betsDay;
+        $Schedule->currency  = $request->currency;
         $Schedule->count     = $request->count ?? 0;
         $Schedule->allAmount = $request->allAmount ?? 0;
         $Schedule->allPayout = $request->allPayout ?? 0;
@@ -84,6 +87,7 @@ class dailyBets extends Model
         $Schedule = dailyBets::where('betsDay',"=",$day)->and("gameType","=",$game)->get();
         $Schedule->gameType  = $request->gameType;
         $Schedule->betsDay   = $request->betsDay;
+        $Schedule->currency  = $request->currency;
         $Schedule->count     = $request->count ?? 0;
         $Schedule->allAmount = $request->allAmount ?? 0;
         $Schedule->allPayout = $request->allPayout ?? 0;

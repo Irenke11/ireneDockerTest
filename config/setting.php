@@ -10,7 +10,7 @@ return [
   'currency'=> [
     'RMB',
     'USD',
-    'NTD',
+    'TWD',
   ],
 
 ];

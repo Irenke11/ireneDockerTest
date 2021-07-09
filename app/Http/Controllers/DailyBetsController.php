@@ -34,19 +34,15 @@ class DailyBetsController extends Controller
      */
     public function allData(Request $request)
     {
-        $length = $request->input('length');
-        $sortBy = $request->input('column');
-        $orderBy = $request->input('dir');
-
+        $length = $request->input('length')??"100";
+        $sortBy = $request->input('column')??"id";
+        $orderBy = $request->input('dir')??"desc";
         $searchValue["startTime"]=$request->input('startTime');
         $searchValue["endTime"]=$request->input('endTime');
         $searchValue["datepicker"]=$request->input('datepicker');
-
+        $searchValue["currency"]=$request->input('currency');
         $query = dailyBets::getAllInfo($sortBy, $orderBy, $searchValue);
-
         $data = $query->paginate($length); 
-           
         return new DataTableCollectionResource($data);
-
     }
 }

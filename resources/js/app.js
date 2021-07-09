@@ -9,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import DataTable from 'laravel-vue-datatable'
 
-
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(DataTable);

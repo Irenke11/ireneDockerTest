@@ -3,10 +3,11 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header">Create new player</div>
+          <div v-if="!form.playerId" class="card-header">Create new player</div>
+          <div v-if="form.playerId" class="card-header">Edit player</div>
           <div class="card-body">
             <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-              <csrf-token-input />
+          
               <b-form-group
                 label-cols-lg="3"
                 label="Please enter information"
@@ -34,16 +35,22 @@
                   </li>
                 </b-form-group>
 
-                <b-form-group
+                <b-form-group 
                   label-cols-sm="3"
                   label="Password:"
                   label-align-sm="right"
                   label-for="nested-password"
                 >
-                  <b-form-input
+                  <b-button  
+                    v-if="form.playerId" 
+                    variant="outline-secondary"
+                    v-on:click="restorePassword"
+                    >Restore default</b-button>
+                  <b-form-input 
+                    v-if="!form.playerId"
                     v-model="form.password"
                     id="nested-password"
-                    value="1234456789"
+                    
                   ></b-form-input>
                   <li
                     v-if="errors.password"
@@ -63,7 +70,6 @@
                   <b-form-input
                     v-model="form.name"
                     id="nested-name"
-                    value="irene3"
                   ></b-form-input>
                   <li
                     v-if="errors.name"
@@ -82,7 +88,7 @@
                 >
                   <b-form-radio-group
                     class="pt-2"
-                    :options="['RMB', 'USD', 'TWD']"
+                    :options="data"
                     v-model="form.currency"
                   ></b-form-radio-group>
                   <li
@@ -92,6 +98,20 @@
                   >
                     {{ error }}
                   </li>
+                </b-form-group>
+                <b-form-group
+                  label-cols-sm="3"
+                  label="status"
+                  label-align-sm="right"
+                  class="mb-0"
+                >
+                  <b-form-radio-group
+                    class="pt-2"
+                    id="radio-group-1"
+                    v-model="form.status"
+                    :options="options"
+                    name="radio-options"
+                  ></b-form-radio-group>
                 </b-form-group>
                 <b-button type="submit" variant="primary">Submit</b-button>
                 <b-button type="reset" variant="danger">Reset</b-button>
@@ -105,19 +125,48 @@
 </template>
 <script>
 export default {
+  props: ["data","playerinfo"],
+  mounted() {
+    // console.log(this.playerinfo);
+  },
   data() {
     return {
       form: {
-        account: "",
-        name: "",
-        currency: "",
-        password: ""
+        playerId: this.playerinfo.playerId ? this.playerinfo.playerId : "",
+        account: this.playerinfo.account ? this.playerinfo.account : "",
+        name: this.playerinfo.name ? this.playerinfo.name : "",
+        currency: this.playerinfo.currency ? this.playerinfo.currency : "RMB",
+        password: this.playerinfo.password ? this.playerinfo.password : "",
+        status: this.playerinfo.status ? this.playerinfo.status : "1",
       },
+      options: [
+        { text: "Open", value: "1" },
+        { text: "Close", value: "0" }
+      ],
       show: true,
       errors: false
     };
   },
   methods: {
+    restorePassword: function (event) {
+        axios
+        .post("/players/restorePassword", this.form)
+        .then(result => {
+          this.errors = {
+            account: false,
+            name: false,
+            currency: false,
+            password: false
+          };
+          alert("success");
+        })
+        .catch(error => {
+          // 请求失败处理
+          // console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
+        });
+      // alert('success')
+    },
     onSubmit(event) {
       event.preventDefault();
       // alert(JSON.stringify(this.form))

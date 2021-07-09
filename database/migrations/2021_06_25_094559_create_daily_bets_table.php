@@ -18,9 +18,10 @@ class CreateDailyBetsTable extends Migration
             $table->string('gameType', 32);
             $table->TIMESTAMP('betsDay');
             $table->string('count', 12);
-            $table->decimal('allAmount',24, 2)->unsigned();
-            $table->decimal('allPayout',24, 2)->unsigned();
-            $table->decimal('allProfit',24, 2)->unsigned();
+            $table->string('currency')->default("RMB");//幣別
+            $table->float('allAmount',24, 2)->unsigned();
+            $table->float('allPayout',24, 2)->unsigned();
+            $table->float('allProfit',24, 2);
             $table->timestamps();
         });
     }

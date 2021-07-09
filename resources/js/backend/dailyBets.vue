@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header">Daily Bets page</div>
+          <div class="card-header">Daily Bets Page</div>
           <div class="card-body">
             <data-table
               :columns="columns"
@@ -23,7 +23,7 @@
                   </div>
                   <div class="col">
                     <b-form-datepicker
-                      v-model="filters.datepicker"
+                      v-model="tableFilters.filters.datepicker"
                       id="datepicker"
                       locale="en"
                       class="mb-2"
@@ -33,6 +33,18 @@
                     ></b-form-datepicker>
                   </div>
                   <div class="col">
+                    <select
+                      v-model="tableFilters.filters.currency"
+                      class="form-control"
+                    >
+                      <option value >Currency</option>
+                      <option value="USD">USD</option>
+                      <option value="RMB">RMB</option>
+                      <option value="TWD">TWD</option>
+                    </select>
+                  </div>
+                  <!-- 時間 -->
+                  <!-- <div class="col">
                     <b-form-timepicker
                       v-model="filters.startTime"
                       locale="en"
@@ -44,7 +56,8 @@
                       v-model="filters.endTime"
                       locale="en"
                     ></b-form-timepicker>
-                  </div>
+                  </div> -->
+                  <!-- 時間 -->
                 </div>
               </div>
             </data-table>
@@ -79,16 +92,18 @@ export default {
         search: "",
         datepicker: yesterday,
         startTime: "00:00:00",
-        endTime: "23:59:59"
+        endTime: "23:59:59",
+        currency: ""
       },
       columns: [
         { name: "id", label: "Id", orderable: true },
-        { name: "gameType", label: "gameType", orderable: true },
-        { name: "betsDay", label: "betsDay", orderable: true },
-        { name: "count", label: "count", orderable: false },
-        { name: "allAmount", label: "allAmount", orderable: false },
-        { name: "allPayout", label: "allPayout", orderable: false },
-        { name: "allProfit", label: "allProfit", orderable: false }
+        { name: "gameType", label: "Game Type", orderable: true },
+        { name: "currency", label: "currency", orderable: true },
+        { name: "betsDay", label: "Bets Day", orderable: true },
+        { name: "count", label: "Count", orderable: true },
+        { name: "allAmount", label: "All Amount", orderable: false },
+        { name: "allPayout", label: "All Payout", orderable: false },
+        { name: "allProfit", label: "All Profit", orderable: false }
       ]
     };
   }
