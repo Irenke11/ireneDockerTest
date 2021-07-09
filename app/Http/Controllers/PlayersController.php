@@ -86,10 +86,9 @@ class PlayersController extends Controller
     
     public function restorePassword(Request $request)
     { 
-            $data["playerId"]=$request->input('playerId');
-            $query=Players::restorePassword($data["playerId"]);
-            return $query;
-            // var_dump($searchValue);
+        $data["playerId"]=$request->input('playerId');
+        $query=Players::restorePassword($data["playerId"]);
+        return $query;
     }
 }
 

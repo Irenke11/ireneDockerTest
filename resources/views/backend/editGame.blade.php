@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
- @if($edit)
- <editgame-content :data="{{$data}}"></editgame-content> -->
- @else
- <addgame-content ></addgame-content>
- @endif
+ <addgame-content :data="{{ json_encode($gametypeList) }}" :info="{{ json_encode($gameInfo ?? '')}}"></addgame-content>
 @endsection

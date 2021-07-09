@@ -28,6 +28,9 @@ class dailyBets extends Model
         if (isset($searchValue['currency'])) {
             $query->where("currency", '=', $searchValue['currency']);
         }
+        if (isset($searchValue['gametype'])) {
+            $query->where("gametype", '=', $searchValue['gametype']);
+        }
         if (isset($searchValue["startTime"]) & isset($searchValue["endTime"])) {
             $query->whereBetween('betsDay', [$searchValue["datepicker"]." ".$searchValue["startTime"], $searchValue["datepicker"].' '.$searchValue["endTime"]]);
         }else{

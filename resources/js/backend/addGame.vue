@@ -3,7 +3,8 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header">Create new game</div>
+          <div  v-if="!form.gameId"  class="card-header">Create new game</div>
+          <div v-if="form.gameId" class="card-header">Edit game information</div>
           <div class="card-body">
             <b-form @submit="onSubmit" @reset="onReset" v-if="show">
               <b-form-group
@@ -20,7 +21,7 @@
                   label-for="nameEn"
                 >
                   <b-form-input
-                    v-model="props.gameNameEn"
+                    v-model="form.gameNameEn"
                     id="nameEn"
                   ></b-form-input>
                   <li
@@ -38,7 +39,7 @@
                   label-for="nameCn"
                 >
                   <b-form-input
-                    v-model="props.gameNameCn"
+                    v-model="form.gameNameCn"
                     id="nameCn"
                   ></b-form-input>
                   <li
@@ -56,7 +57,7 @@
                   label-for="nameTw"
                 >
                   <b-form-input
-                    v-model="props.gameNameTw"
+                    v-model="form.gameNameTw"
                     id="nameTw"
                   ></b-form-input>
                   <li
@@ -76,8 +77,8 @@
                 >
                   <b-form-radio-group
                     class="pt-2"
-                    :options="['slot', 'poker', 'fish']"
-                    v-model="props.gameType"
+                    :options="data"
+                    v-model="form.gameType"
                   ></b-form-radio-group>
                   <li
                     v-if="errors.gameType"
@@ -96,7 +97,7 @@
                   <b-form-radio-group
                     class="pt-2"
                     id="radio-group-1"
-                    v-model="props.status"
+                    v-model="form.status"
                     :options="options"
                     name="radio-options"
                   ></b-form-radio-group>
@@ -113,25 +114,30 @@
 </template>
 <script>
 export default {
-  // props: ['data'],
+  props: ["data","info"],
   mounted() {
     // console.log(typeof JSON.parse(this.data.gameName))
-    // console.log(JSON.parse(this.data.gameName).en)
+    // console.log(this.data.gameName->en)
   },
   data() {
     return {
-      selected: "1",
       options: [
         { text: "Open", value: "1" },
         { text: "Close", value: "0" }
       ],
-      props: {
-        gameId: "",
-        gameNameEn: "",
-        gameNameCn: "",
-        gameNameTw: "",
-        gameType: "slot",
-        status: 1
+      form: {
+        gameId: this.info.gameId ? this.info.gameId : "",
+        gameNameEn: this.info.gameName
+          ? JSON.parse(this.info.gameName).en
+          : "",
+        gameNameCn: this.info.gameName
+          ? JSON.parse(this.info.gameName).cn
+          : "",
+        gameNameTw: this.info.gameName
+          ? JSON.parse(this.info.gameName).tw
+          : "",
+        gameType: this.info.gameType ? this.info.gameType : "slot",
+        status: this.info.status ? this.info.status : 1
       },
       show: true,
       errors: false
@@ -143,7 +149,7 @@ export default {
       // alert(JSON.stringify(this.props))
       // //post
       axios
-        .put("/games/editData", this.props)
+        .put("/games/editData", this.form)
         .then(result => {
           console.log(result);
           this.errors = {
@@ -153,7 +159,7 @@ export default {
             gameNameTw: false,
             gameType: false
           };
-          alert("創建成功");
+          alert("success");
           location.href = "/games/all";
         })
         .catch(error => {
@@ -165,10 +171,12 @@ export default {
     onReset(event) {
       event.preventDefault();
       // Reset our form values
-      this.form.account = "";
-      this.form.name = "";
-      this.form.currency = null;
-      this.form.password = "";
+      this.gameInfo.gameId = "";
+      this.gameInfo.account = "";
+      this.gameInfo.name = "";
+      this.gameInfo.currency = null;
+      this.gameInfo.password = "";
+      this.gameInfo.status = "";
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {

@@ -36,9 +36,12 @@
                       class="form-control"
                     >
                       <option value>Game Type</option>
-                      <option value="slot">Slot</option>
+                      <option v-for="gametype in data" :value="gametype">{{
+                        gametype
+                      }}</option>
+                      <!-- <option value="slot">Slot</option>
                       <option value="poker">Poker</option>
-                      <option value="fish">Fish</option>
+                      <option value="fish">Fish</option> -->
                     </select>
                   </div>
                   <div class="col col-md-4">

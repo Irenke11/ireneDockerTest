@@ -24,7 +24,9 @@ class DailyBetsController extends Controller
      */
     public function index(Request $request)
     {
-        return view('backend.dailyBets');
+        $request["currencyList"]=config('setting.currency');
+        $request["gametypeList"]=config('setting.gametype');
+        return view('backend.dailyBets',$request);
     }
 
     /**
@@ -40,6 +42,7 @@ class DailyBetsController extends Controller
         $searchValue["startTime"]=$request->input('startTime');
         $searchValue["endTime"]=$request->input('endTime');
         $searchValue["datepicker"]=$request->input('datepicker');
+        $searchValue["gametype"]=$request->input('gametype');
         $searchValue["currency"]=$request->input('currency');
         $query = dailyBets::getAllInfo($sortBy, $orderBy, $searchValue);
         $data = $query->paginate($length); 

@@ -51,9 +51,11 @@
                       class="form-control"
                     >
                       <option value>Currency</option>
-                      <option value="USD">USD</option>
-                      <option value="RMB">RMB</option>
-                      <option value="TWD">TWD</option>
+                      <option
+                        v-for="currency in currencylist"
+                        :value="currency"
+                        >{{ currency }}</option
+                      >
                     </select>
                   </div>
                 </div>
@@ -93,7 +95,7 @@
 </template>
 <script>
 export default {
-  props: ["data"],
+  props: ["currencylist", "gametypelist"],
   mounted() {
     // console.log(this.data)
     // console.log(typeof this.data);

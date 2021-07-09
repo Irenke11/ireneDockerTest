@@ -24,7 +24,8 @@ class GamesController extends Controller
      */
     public function index(Request $request)
     {
-        return view('backend.games');
+        $request["gametypeList"]=config('setting.gametype');
+        return view('backend.games',$request);
     }
 
     /**
@@ -48,17 +49,15 @@ class GamesController extends Controller
     public function editGame(Request $request)
     {
         $gameId = request()->segment(count(request()->segments()));//id
-        $data["data"] = games::getInfoById($gameId);
-        $data["edit"]=true;//修改
-        
-        return view('backend.editGame',$data);
+        $request["gametypeList"]=config('setting.gametype');
+        $request["gameInfo"] = games::getInfoById($gameId);
+        return view('backend.editGame',$request);
     }
 
     public function addGame(Request $request)
     {
-        $data["data"] ="";
-        $data["edit"]=false;//新增
-        return view('backend.editGame',$data);
+        $request["gametypeList"]=config('setting.gametype');
+        return view('backend.editGame',$request);
     }
     
     public function editData(Request $request)
@@ -99,79 +98,6 @@ class GamesController extends Controller
                 'errors' => $exception->errors(),
             ], 422);
         }
-
-
-
-
-
-
         return $Games;
-    }
-    // public function editGameById(Request $request)
-    // {
-    //     // 驗證請求...
-
-
-    //     $Game = Games::getInfoById($request->gameId);
-    //     $Game->gameName      = $gameName;
-    //     $Game->gameType  = $request->gameType;
-    //     $Game->status    = $request->status;
-    //     $Game->save();
-
-    //     return $Game;
-    // }
-    // public function getGameById(Request $request)
-    // {
-    //     // error_log(json_encode($$request,true));
-    //     $gameId = $request->input('gameId');
-    //     // $edit = $request->input('edit');
-    //     // if(isset($edit)){
-    //         if (isset($gameId)) {
-    //             $query = Games::getInfoById($gameId);
-    //         }
-    //     // }
-    //     //   error_log(json_encode($query,true));
-    //     return $query;
-    // }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\games  $games
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\games  $games
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(games $games)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\games  $games
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, games $games)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\games  $games
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(games $games)
-    {
-        //
     }
 }

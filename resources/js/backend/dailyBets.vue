@@ -37,10 +37,26 @@
                       v-model="tableFilters.filters.currency"
                       class="form-control"
                     >
-                      <option value >Currency</option>
-                      <option value="USD">USD</option>
-                      <option value="RMB">RMB</option>
-                      <option value="TWD">TWD</option>
+                      <option value>Currency</option>
+                      <option
+                        v-for="currency in currencylist"
+                        :value="currency"
+                        >{{ currency }}</option
+                      >
+                    </select>
+                  </div>
+                  <div class="col">
+                    <select
+                      v-model="tableFilters.filters.gametype"
+                      class="form-control"
+                    >
+                      <option value>Game Type</option>
+                      <option value="All">All</option>
+                      <option
+                        v-for="gametype in gametypelist"
+                        :value="gametype"
+                        >{{ gametype }}</option
+                      >
                     </select>
                   </div>
                   <!-- 時間 -->
@@ -70,7 +86,7 @@
 
 <script>
 export default {
-  props: ["data"],
+  props: ["currencylist", "gametypelist"],
   mounted() {
     // console.log(this.data);
     // console.log(typeof this.data);
@@ -93,7 +109,8 @@ export default {
         datepicker: yesterday,
         startTime: "00:00:00",
         endTime: "23:59:59",
-        currency: ""
+        currency: "",
+        gametype: ""
       },
       columns: [
         { name: "id", label: "Id", orderable: true },

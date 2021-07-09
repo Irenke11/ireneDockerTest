@@ -24,7 +24,9 @@ class BetsController extends Controller
      */
     public function index(Request $request)
     {
-        return view('backend.bets');
+        $request["currencyList"]=config('setting.currency');
+        $request["gametypeList"]=config('setting.gametype');
+        return view('backend.bets',$request);
     }
     public function allData(Request $request)
     {
