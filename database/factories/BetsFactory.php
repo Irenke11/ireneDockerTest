@@ -15,9 +15,13 @@ $factory->define(bets::class, function (Faker $faker) {
     $no=array_rand(json_decode($playerslist), 1);//隨機玩家
     $gameslist=games::getAll();//游戲資訊
     $no2=array_rand(json_decode($gameslist), 1);//隨機游戲id
+    $amount = $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 1000);
+    $payout = $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 500);
+    $profit = $amount - $payout;
         return [
-            'amount' => Arr::random(range(1,1000)),
-            'payout' => Arr::random(range(0,500)),
+            'amount' => $amount,
+            'payout' => $payout,
+            'profit' => $profit,
             'bureauNo' => $playerslist[$no]->playerId.date("Ymd").$gameslist[$no2]->gameId,
             'gameName' => json_decode($gameslist[$no2]->gameName)->en,
             'gameId' => $gameslist[$no2]->gameId,

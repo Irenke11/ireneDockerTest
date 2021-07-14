@@ -55,7 +55,7 @@ class dailyBets extends Model
                         DB::raw('count(*) as count'),
                         DB::raw('SUM(amount) as allAmount'),
                         DB::raw('SUM(payout) as allPayout'),
-                        DB::raw('SUM(payout)-SUM(amount) as allProfit')
+                        DB::raw('SUM(amount)-SUM(payout) as allProfit')
                     )->whereBetween('betTime', [$dayTime["startTime"],$dayTime["endTime"]])->where('gameType', "=", $gameType)->where('currency', '=', $currency)->first();
         // print("<pre>".print_r($dailyBets,true)."</pre>");
         return $dailyBets;
@@ -66,7 +66,7 @@ class dailyBets extends Model
                         DB::raw('count(*) as count'),
                         DB::raw('SUM(amount) as allAmount'),
                         DB::raw('SUM(payout) as allPayout'),
-                        DB::raw('SUM(payout)-SUM(amount) as allProfit')
+                        DB::raw('SUM(amount)-SUM(payout) as allProfit')
                     )->whereBetween('betTime', [$dayTime["startTime"],$dayTime["endTime"]])
                     ->where('currency', '=', $currency)
                     ->first();

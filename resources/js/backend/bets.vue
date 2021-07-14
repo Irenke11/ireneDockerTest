@@ -25,16 +25,16 @@
                     <input
                       name="name"
                       class="form-control"
-                      v-model="tableFilters.filters.bureauNo"
-                      placeholder="Search bureau No"
+                      v-model="tableFilters.filters.betId"
+                      placeholder="Search betId"
                     />
                   </div>
                   <div class="col">
                     <input
                       name="name"
                       class="form-control"
-                      v-model="tableFilters.filters.betId"
-                      placeholder="Search betId"
+                      v-model="tableFilters.filters.bureauNo"
+                      placeholder="Search bureau No"
                     />
                   </div>
                   <div class="col">
@@ -128,13 +128,26 @@ export default {
         { name: "playerId", label: "Player Id", orderable: true },
         { name: "currency", label: "Currency", orderable: true },
         { name: "betTime", label: "Bet Time", orderable: true },
-        { name: "amount", label: "Amount", orderable: true },
-        { name: "payout", label: "Payout", orderable: true },
+        {
+          name: "amount",
+          label: "Amount",
+          orderable: true,
+          transform: ({ data, name }) =>
+            "$ " + new Intl.NumberFormat().format(data[name])
+        },
+        {
+          name: "payout",
+          label: "Payout",
+          orderable: true,
+          transform: ({ data, name }) =>
+            "$ " + new Intl.NumberFormat().format(data[name])
+        },
         {
           name: "profit",
           label: "Profit",
           orderable: true,
-          transform: ({ data, name }) => `${data["payout"] - data["amount"]}`
+          transform: ({ data, name }) =>
+            "$ " + new Intl.NumberFormat().format(data[name])
         }
       ]
     };

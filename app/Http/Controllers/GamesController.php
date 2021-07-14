@@ -82,6 +82,7 @@ class GamesController extends Controller
             if(isset($checkGames)){
                 $Games = games::editGameById($request);//修改
             }else{
+                $request['gameId']="";
                 $Games = games::addGame($request);//新增
             }
             return response()->json([

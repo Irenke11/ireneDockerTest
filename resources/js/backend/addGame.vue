@@ -171,12 +171,11 @@ export default {
     onReset(event) {
       event.preventDefault();
       // Reset our form values
-      this.gameInfo.gameId = "";
-      this.gameInfo.account = "";
-      this.gameInfo.name = "";
-      this.gameInfo.currency = null;
-      this.gameInfo.password = "";
-      this.gameInfo.status = "";
+      this.form.gameNameEn=this.info.gameName ? JSON.parse(this.info.gameName).en : "";
+      this.form.gameNameCn=this.info.gameName ? JSON.parse(this.info.gameName).cn : "";
+      this.form.gameNameTw=this.info.gameName ? JSON.parse(this.info.gameName).tw : "";
+      this.form.gameType= this.info.gameType ? this.info.gameType : "slot";
+      this.form.status= this.info.status ? this.info.status : 1;
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {

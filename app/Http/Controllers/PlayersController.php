@@ -15,6 +15,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Response;
+use App\currency;
 
 class PlayersController extends Controller
 {
@@ -25,6 +26,7 @@ class PlayersController extends Controller
      */
     public function index(Request $request)
     {
+        
         $request["currencyList"]=config('setting.currency');
         $request["playerInfo"]= [];
         return view('backend.players',$request);
@@ -38,6 +40,7 @@ class PlayersController extends Controller
         $searchValue["currency"]=$request->input('currency');
         $searchValue["playerId"]=$request->input('playerId');
         $searchValue["currencyList"]=config('setting.currency');
+
         $query = Players::getAllInfo($sortBy, $orderBy, $searchValue);
         $data = $query->paginate($length);
         // $data['payload']["currencyList"]=config('setting.currency');
@@ -53,14 +56,28 @@ class PlayersController extends Controller
     {
         $currency=config('setting.currency');//["RMB","TWD","USD"]
         try {
-            $validator = $request->validate([  
-                'account' => ['required', 'email', 'string','min:6', 'max:20',"unique:players,account"],
-                'name' => ['required', 'string', 'min:6', 'max:20',"unique:players,name"],
-                'password' => ['required','alpha_num', 'string', 'min:6','max:20'], 
-                'currency' => ['required', 'string'],
-                'status' => ['required', 'boolean'],
-            ]);
-            $Players = Players::addPlayer($request); //新增
+            $checkPlayers = Players::getPlayerInfoById($request->playerId);
+            // dd($checkPlayers);
+            if(!is_null($checkPlayers) ){
+                $validator = $request->validate([  
+                    'playerId' => ['required'],
+                    'account' => ['required', 'email', 'string','min:6', 'max:30'],
+                    'name' => ['required', 'string', 'min:6', 'max:20'],
+                    // 'password' => ['required','alpha_num', 'string', 'min:6','max:20'], 
+                    'currency' => ['required', 'string'],
+                    'status' => ['required', 'boolean'],
+                ]);
+                $Players = Players::editPlayerById($request); //修改
+            }else{
+                $validator = $request->validate([  
+                    'account' => ['required', 'email', 'string','min:6', 'max:30',"unique:players,account"],
+                    'name' => ['required', 'string', 'min:6', 'max:20',"unique:players,name"],
+                    'password' => ['required','alpha_num', 'string', 'min:6','max:20'], 
+                    'currency' => ['required', 'string'],
+                    'status' => ['required', 'boolean'],
+                ]);
+                $Players = Players::addPlayer($request); //新增
+            }
             return response()->json([
                 'code' => '201',
                 'status' => 'success',
@@ -81,6 +98,7 @@ class PlayersController extends Controller
         $playerId=request()->segment(count(request()->segments()));
         $request["currencyList"]=config('setting.currency');
         $request["playerInfo"]= Players::getPlayerInfoById($playerId);
+        $request["playerId"]=$playerId;
         return view('backend.addPlayer',$request);
     }
     

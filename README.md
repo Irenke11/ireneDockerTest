@@ -57,6 +57,7 @@ composer require jamesdordoy/laravelvuedatatable
 
 php artisan migrate  建立
 php artisan migrate:rollback 重置
+php artisan db:seed --class=PlayersSeeder 
 php artisan db:seed --class=BetsSeeder 
 php artisan make:model dailyBets --all 可以用这个一次全健好
 <players-content :data="{{ $searchPlayerInfo }}"></players-content> 寫法

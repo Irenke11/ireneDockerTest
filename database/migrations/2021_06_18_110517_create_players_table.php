@@ -16,10 +16,10 @@ class CreatePlayersTable extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->bigIncrements('playerId')->from(1001)->unique();
             $table->string('account', 50)->unique();
-            $table->string('password', 50);
+            $table->string('password', 100);
             $table->string('name', 50)->unique();
-            $table->string('currency')->default("RMB");
-            $table->string('status')->default(1);
+            $table->tinyInteger('currency')->default(1);
+            $table->tinyInteger('status')->default(1);
             // $table->rememberToken();
             $table->timestamps();
         });

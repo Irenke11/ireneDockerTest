@@ -7,7 +7,6 @@
           <div v-if="form.playerId" class="card-header">Edit player</div>
           <div class="card-body">
             <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-          
               <b-form-group
                 label-cols-lg="3"
                 label="Please enter information"
@@ -15,7 +14,7 @@
                 label-class="font-weight-bold pt-0"
                 class="mb-0"
               >
-              
+                <!-- <b-form-input  name="playerId" v-model="form.playerId" type="text"></b-form-input> -->
                 <b-form-group
                   label-cols-sm="3"
                   label="Email:"
@@ -35,22 +34,22 @@
                   </li>
                 </b-form-group>
 
-                <b-form-group 
+                <b-form-group
                   label-cols-sm="3"
                   label="Password:"
                   label-align-sm="right"
                   label-for="nested-password"
                 >
-                  <b-button  
-                    v-if="form.playerId" 
+                  <b-button
+                    v-if="form.playerId"
                     variant="outline-secondary"
                     v-on:click="restorePassword"
-                    >Restore default</b-button>
-                  <b-form-input 
+                    >Restore default</b-button
+                  >
+                  <b-form-input
                     v-if="!form.playerId"
                     v-model="form.password"
                     id="nested-password"
-                    
                   ></b-form-input>
                   <li
                     v-if="errors.password"
@@ -125,7 +124,7 @@
 </template>
 <script>
 export default {
-  props: ["data","playerinfo"],
+  props: ["data", "playerinfo"],
   mounted() {
     // console.log(this.playerinfo);
   },
@@ -137,7 +136,7 @@ export default {
         name: this.playerinfo.name ? this.playerinfo.name : "",
         currency: this.playerinfo.currency ? this.playerinfo.currency : "RMB",
         password: this.playerinfo.password ? this.playerinfo.password : "",
-        status: this.playerinfo.status ? this.playerinfo.status : "1",
+        status: this.playerinfo.status ? this.playerinfo.status : "1"
       },
       options: [
         { text: "Open", value: "1" },
@@ -148,8 +147,8 @@ export default {
     };
   },
   methods: {
-    restorePassword: function (event) {
-        axios
+    restorePassword: function(event) {
+      axios
         .post("/players/restorePassword", this.form)
         .then(result => {
           this.errors = {
@@ -158,7 +157,7 @@ export default {
             currency: false,
             password: false
           };
-          alert("success");
+          alert(this.form.account + " restorePassword success");
         })
         .catch(error => {
           // 请求失败处理
@@ -170,7 +169,6 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       // alert(JSON.stringify(this.form))
-      //post
       axios
         .post("/players/addData", this.form)
         .then(result => {
@@ -181,7 +179,8 @@ export default {
             currency: false,
             password: false
           };
-          alert("success");
+          alert(this.form.account + " create success");
+          location.href = "/players/all";
         })
         .catch(error => {
           // 请求失败处理
@@ -192,10 +191,14 @@ export default {
     onReset(event) {
       event.preventDefault();
       // Reset our form values
-      this.form.account = "";
-      this.form.name = "";
-      this.form.currency = null;
-      this.form.password = "";
+      this.form.account = this.playerinfo.account
+        ? this.playerinfo.account
+        : "";
+      this.form.name = this.playerinfo.name ? this.playerinfo.name : "";
+      this.form.currency = this.playerinfo.currency
+        ? this.playerinfo.currency
+        : "RMB";
+      // this.form.password = "";
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {

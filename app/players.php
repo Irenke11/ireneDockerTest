@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class players extends Model
 {
@@ -40,23 +41,23 @@ class players extends Model
         $query = new Players;
         $query->account   = $request->account;
         $query->name      = $request->name;
-        $query->password  = $request->password;
+        $query->password  = Hash::make($request->password);
         $query->currency  = $request->currency;
         $query->status    = $request->status;
         $query->save();
         return $query;
     }
 
-    public static function editPlayerById($request){
-        $query = Players::where("playerId","=",$request['playerId'])->first();
-        $query->account   = $request->account;
-        $query->name      = $request->name;
-        $query->password  = $request->password;
-        $query->currency  = $request->currency;
-        $query->status    = $request->status;
-        $query->save();
-        return $query;
-    }
+    // public static function editPlayerById($request){
+    //     $query = Players::where("playerId","=",$request['playerId'])->first();
+    //     $query->account   = $request->account;
+    //     $query->name      = $request->name;
+    //     $query->password  = $request->password;
+    //     $query->currency  = $request->currency;
+    //     $query->status    = $request->status;
+    //     $query->save();
+    //     return $query;
+    // }
     public static function getAll(){
         $query = Players::all();
         return $query;
@@ -73,10 +74,22 @@ class players extends Model
     }
     public static function restorePassword($playerId){
         $query = Players::where('playerId', '=', $playerId)->first();
-        $query->password  = "123456789";
+        $query->password  = Hash::make('123456');
         $query->save();
         return $query;
     }
+
+    public static function editPlayerById($request)
+    {   
+        $query = Players::where("playerId","=",$request['playerId'])->first();
+        $query->name      = $request->name;
+        // $query->password  = $request->password;
+        $query->currency  = $request->currency;
+        $query->status    = $request->status;
+        $query->save();
+        return $query;
+    }
+
     public static function getPlayerInfoByAccount($account){
         $query = Players::where('account', '=', $account)->get();
         return $query;

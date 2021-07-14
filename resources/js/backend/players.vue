@@ -40,12 +40,11 @@
                   <div class="col">
                     <select
                       v-model="tableFilters.filters.currency"
-                      class="form-control"
-                    >
+                      class="form-control">
+                      <!-- <option value>  {{ config('base.currency.1') }}</option> -->
                       <option value>Currency</option>
-                      <option v-for="currency in data" :value="currency">{{
-                        currency
-                      }}</option>
+                      <option v-for="currency in data" :value="currency">
+                        {{currency}}</option>
                     </select>
                   </div>
                 </div>
@@ -79,12 +78,14 @@ export default {
         { name: "playerId", label: "Id", orderable: true },
         { name: "account", label: "Account", orderable: true },
         { name: "name", label: "Name", orderable: true },
-        { name: "currency", label: "Currency", orderable: false },
+        { name: "currency", label: "Currency", orderable: true,
+          // transform: ({ data, name }) => `${ config('setting.currency.' + data[name]) }` 
+        },
         {
           name: "status",
-          label: "Status",
-          orderable: false,
-          transform: ({ data, name }) => `${data[name] == 1 ? "yes" : "no"}`
+          label: "Open",
+          orderable: true,
+          transform: ({ data, name }) => `${data[name] == 1 ? "✓" : "x"}`
         },
         { name: "created_at", label: "Created", orderable: true },
         {

@@ -3,14 +3,14 @@
 return [
 
   'gametype'=>[
-    'slot',
-    'poker',
-    'fish',
+    '1' => 'Slot',
+    '2' => 'Poker',
+    '3' => 'Fish',
   ],
   'currency'=> [
-    'RMB',
-    'USD',
-    'TWD',
+    '1' => 'RMB',
+    '2' => 'USD',
+    '3' => 'TWD',
   ],
 
 ];

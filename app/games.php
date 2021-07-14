@@ -48,7 +48,7 @@ class games extends Model
     public static function addGame($request)
     {   
         $query = new Games;
-        $query->gameId   = $request->gameId;
+        // $query->gameId   = $request->gameId;
         $query->gameName = $request->gameName;
         $query->gameType = $request->gameType;
         $query->status   = $request->status;

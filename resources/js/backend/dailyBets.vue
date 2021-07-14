@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import DataTableCurrencyCell from "./tools/DataTableCurrencyCell.vue";
 export default {
   props: ["currencylist", "gametypelist"],
   mounted() {
@@ -96,6 +97,9 @@ export default {
   //         console.log(typeof data);
   //     },
   // },
+  components: {
+    DataTableCurrencyCell
+  },
   data() {
     var yesterday = new Date(Date.now() - 864e5);
     var dd = String(yesterday.getDate()).padStart(2, "0");
@@ -118,9 +122,33 @@ export default {
         { name: "currency", label: "currency", orderable: true },
         { name: "betsDay", label: "Bets Day", orderable: true },
         { name: "count", label: "Count", orderable: true },
-        { name: "allAmount", label: "All Amount", orderable: false },
-        { name: "allPayout", label: "All Payout", orderable: false },
-        { name: "allProfit", label: "All Profit", orderable: false }
+        {
+          name: "allAmount",
+          label: "All Amount",
+          orderable: true,
+          transform: ({ data, name }) =>
+            "$ " + new Intl.NumberFormat().format(data[name])
+        },
+        {
+          name: "allPayout",
+          label: "All Payout",
+          orderable: true,
+          transform: ({ data, name }) =>
+            "$ " + new Intl.NumberFormat().format(data[name])
+        },
+        {
+          name: "allProfit",
+          label: "All Profit",
+          orderable: true,
+          transform: ({ data, name }) =>
+            "$ " + new Intl.NumberFormat().format(data[name])
+        }
+        // ,{
+        //   name: "allProfit",
+        //   label: "All Profit",
+        //   orderable: true,
+        //   component: DataTableCurrencyCell
+        // }
       ]
     };
   }

@@ -85,27 +85,27 @@ export default {
         {
           name: "gameNameEn",
           label: "Name English",
-          orderable: true,
+          orderable: false,
           transform: ({ data, name }) => `${JSON.parse(data["gameName"]).en}`
         },
         {
           name: "gameNameCn",
           label: "Name Chinses",
-          orderable: true,
+          orderable: false,
           transform: ({ data, name }) => `${JSON.parse(data["gameName"]).cn}`
         },
         {
           name: "gameNameTw",
           label: "Name TaiWan",
-          orderable: true,
+          orderable: false,
           transform: ({ data, name }) => `${JSON.parse(data["gameName"]).tw}`
         },
         { name: "created_at", label: "Created", orderable: true },
         {
           name: "status",
-          label: "Status",
-          orderable: false,
-          transform: ({ data, name }) => `${data[name] == 1 ? "yes" : "no"}`
+          label: "Open",
+          orderable: true,
+          transform: ({ data, name }) => `${data[name] == 1 ? "✓" : "×"}`
         },
         {
           label: "Edit",
