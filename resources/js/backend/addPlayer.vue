@@ -14,7 +14,6 @@
                 label-class="font-weight-bold pt-0"
                 class="mb-0"
               >
-                <!-- <b-form-input  name="playerId" v-model="form.playerId" type="text"></b-form-input> -->
                 <b-form-group
                   label-cols-sm="3"
                   label="Email:"
@@ -22,6 +21,13 @@
                   label-for="nested-Account"
                 >
                   <b-form-input
+                    readonly
+                    v-if="form.playerId"
+                    v-model="form.account"
+                    id="nested-Account"
+                  ></b-form-input>
+                  <b-form-input
+                    v-if="!form.playerId"
                     v-model="form.account"
                     id="nested-Account"
                   ></b-form-input>
@@ -44,8 +50,8 @@
                     v-if="form.playerId"
                     variant="outline-secondary"
                     v-on:click="restorePassword"
-                    >Restore default</b-button
-                  >
+                    >Restore default
+                  </b-button>
                   <b-form-input
                     v-if="!form.playerId"
                     v-model="form.password"
@@ -59,6 +65,7 @@
                     {{ error }}
                   </li>
                 </b-form-group>
+
 
                 <b-form-group
                   label-cols-sm="3"
@@ -87,7 +94,7 @@
                 >
                   <b-form-radio-group
                     class="pt-2"
-                    :options="data"
+                    :options="opencurrencylist"
                     v-model="form.currency"
                   ></b-form-radio-group>
                   <li
@@ -124,21 +131,25 @@
 </template>
 <script>
 export default {
-  props: ["data", "playerinfo"],
+  props: ["data", "opencurrencylist", "playerinfo"],
   mounted() {
-    // console.log(this.playerinfo);
+    // console.log(this.playerinfo.name ? this.playerinfo.name : "");
   },
   data() {
     return {
       form: {
         playerId: this.playerinfo.playerId ? this.playerinfo.playerId : "",
         account: this.playerinfo.account ? this.playerinfo.account : "",
-        name: this.playerinfo.name ? this.playerinfo.name : "",
-        currency: this.playerinfo.currency ? this.playerinfo.currency : "RMB",
+        name: this.playerinfo.name ? this.playerinfo.name : " ",
+        currency: this.playerinfo.currency ? this.playerinfo.currency : 1,
         password: this.playerinfo.password ? this.playerinfo.password : "",
-        status: this.playerinfo.status ? this.playerinfo.status : "1"
+        status: this.playerinfo.status ? this.playerinfo.status : 1
       },
       options: [
+        { text: "Open", value: "1" },
+        { text: "Close", value: "0" }
+      ],
+      radio: [
         { text: "Open", value: "1" },
         { text: "Close", value: "0" }
       ],

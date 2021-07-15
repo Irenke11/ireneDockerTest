@@ -52,8 +52,8 @@
                     >
                       <option value>Currency</option>
                       <option
-                        v-for="currency in currencylist"
-                        :value="currency"
+                        v-for="(currency, index) in currencylist"
+                        :value="index"
                         >{{ currency }}</option
                       >
                     </select>
@@ -69,6 +69,7 @@
                       today-button
                       reset-button
                       close-button
+                      :max="max"
                     ></b-form-datepicker>
                   </div>
                   <div class="col-md-3">
@@ -95,7 +96,7 @@
 </template>
 <script>
 export default {
-  props: ["currencylist", "gametypelist"],
+  props: ["currencylist", "configcurrency"],
   mounted() {
     // console.log(this.data)
     // console.log(typeof this.data);
@@ -112,6 +113,7 @@ export default {
     var yyyy = today.getFullYear();
     today = String(yyyy + "-" + mm + "-" + dd);
     return {
+      max: today,
       filters: {
         currency: "",
         bureauNo: "",
@@ -126,25 +128,30 @@ export default {
         { name: "bureauNo", label: "Bureau No", orderable: true },
         { name: "gameName", label: "Game Name", orderable: true },
         { name: "playerId", label: "Player Id", orderable: true },
-        { name: "currency", label: "Currency", orderable: true },
+        {
+          name: "currency",
+          label: "Currency",
+          orderable: true,
+          transform: ({ data, name }) => `${this.configcurrency[data[name]]}`
+        },
         { name: "betTime", label: "Bet Time", orderable: true },
         {
-          name: "amount",
-          label: "Amount",
+          name: "stake",
+          label: "Stake",
           orderable: true,
           transform: ({ data, name }) =>
             "$ " + new Intl.NumberFormat().format(data[name])
         },
         {
-          name: "payout",
-          label: "Payout",
+          name: "winning",
+          label: "Winning",
           orderable: true,
           transform: ({ data, name }) =>
             "$ " + new Intl.NumberFormat().format(data[name])
         },
         {
-          name: "profit",
-          label: "Profit",
+          name: "GGR",
+          label: "GGR",
           orderable: true,
           transform: ({ data, name }) =>
             "$ " + new Intl.NumberFormat().format(data[name])

@@ -17,11 +17,11 @@ class CreateDailyBetsTable extends Migration
             $table->increments("id")->from(4001)->unique();
             $table->tinyInteger('gameType')->default(1);//遊戲類別
             $table->date('betsDay');//下注日期
-            $table->string('count', 12);//注單量
+            $table->mediumInteger('count');//注單量
             $table->tinyInteger('currency')->default(1);//幣別
-            $table->decimal('allAmount',24, 2)->unsigned();
-            $table->decimal('allPayout',24, 2)->unsigned();
-            $table->decimal('allProfit',24, 2);
+            $table->decimal('allStake',24, 2)->unsigned();
+            $table->decimal('allWinning',24, 2)->unsigned();
+            $table->decimal('allGGR',24, 2);
             $table->timestamps();
         });
     }

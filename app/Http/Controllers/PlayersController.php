@@ -26,8 +26,8 @@ class PlayersController extends Controller
      */
     public function index(Request $request)
     {
-        
         $request["currencyList"]=config('setting.currency');
+        $request["openCurrencylist"]=currency::getOpenCurrency();
         $request["playerInfo"]= [];
         return view('backend.players',$request);
     }
@@ -39,8 +39,8 @@ class PlayersController extends Controller
         $searchValue["search"]=$request->input('search');
         $searchValue["currency"]=$request->input('currency');
         $searchValue["playerId"]=$request->input('playerId');
-        $searchValue["currencyList"]=config('setting.currency');
-
+        // $searchValue["currencyList"]=config('setting.currency');
+        // $searchValue["openCurrencylist"]=currency::getOpenCurrency();
         $query = Players::getAllInfo($sortBy, $orderBy, $searchValue);
         $data = $query->paginate($length);
         // $data['payload']["currencyList"]=config('setting.currency');
@@ -49,23 +49,29 @@ class PlayersController extends Controller
     public function addPlayer(Request $request)
     {
         $request["currencyList"]=config('setting.currency');
+        $request["getOpenCurrency"]=array_column(json_decode(currency::getOpenCurrency()), 'id');
+        
+        foreach ($request["getOpenCurrency"] as $key => $value) {
+           $openCurrencylist[$value]=$request["currencyList"][$value];
+        }
+        $request["openCurrencylist"]=$openCurrencylist;
         return view('backend.addPlayer',$request);
     }
 
     public function addData(Request $request)
     {
-        $currency=config('setting.currency');//["RMB","TWD","USD"]
+        $request["currencyList"]=config('setting.currency');
+        $request["openCurrencylist"]=currency::getOpenCurrency();
         try {
             $checkPlayers = Players::getPlayerInfoById($request->playerId);
-            // dd($checkPlayers);
             if(!is_null($checkPlayers) ){
                 $validator = $request->validate([  
-                    'playerId' => ['required'],
-                    'account' => ['required', 'email', 'string','min:6', 'max:30'],
+                    'playerId' => ['required', 'integer'],
+                    // 'account' => ['required', 'email', 'string','min:6', 'max:30'],
                     'name' => ['required', 'string', 'min:6', 'max:20'],
                     // 'password' => ['required','alpha_num', 'string', 'min:6','max:20'], 
-                    'currency' => ['required', 'string'],
-                    'status' => ['required', 'boolean'],
+                    'currency' => ['required', 'integer'],
+                    'status' => ['required', 'integer'],
                 ]);
                 $Players = Players::editPlayerById($request); //修改
             }else{
@@ -73,8 +79,8 @@ class PlayersController extends Controller
                     'account' => ['required', 'email', 'string','min:6', 'max:30',"unique:players,account"],
                     'name' => ['required', 'string', 'min:6', 'max:20',"unique:players,name"],
                     'password' => ['required','alpha_num', 'string', 'min:6','max:20'], 
-                    'currency' => ['required', 'string'],
-                    'status' => ['required', 'boolean'],
+                    'currency' => ['required', 'integer'],
+                    'status' => ['required', 'integer'],
                 ]);
                 $Players = Players::addPlayer($request); //新增
             }
@@ -97,6 +103,11 @@ class PlayersController extends Controller
     {
         $playerId=request()->segment(count(request()->segments()));
         $request["currencyList"]=config('setting.currency');
+        $request["getOpenCurrency"]=array_column(json_decode(currency::getOpenCurrency()), 'id');
+        foreach ($request["getOpenCurrency"] as $key => $value) {
+           $openCurrencylist[$value]=$request["currencyList"][$value];
+        }
+        $request["openCurrencylist"]=$openCurrencylist;
         $request["playerInfo"]= Players::getPlayerInfoById($playerId);
         $request["playerId"]=$playerId;
         return view('backend.addPlayer',$request);

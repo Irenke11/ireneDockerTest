@@ -39,8 +39,8 @@
                     >
                       <option value>Currency</option>
                       <option
-                        v-for="currency in currencylist"
-                        :value="currency"
+                        v-for="(currency, index) in opencurrencylist"
+                        :value="index"
                         >{{ currency }}</option
                       >
                     </select>
@@ -53,8 +53,8 @@
                       <option value>Game Type</option>
                       <option value="All">All</option>
                       <option
-                        v-for="gametype in gametypelist"
-                        :value="gametype"
+                        v-for="(gametype, index) in opengametypelist"
+                        :value="index"
                         >{{ gametype }}</option
                       >
                     </select>
@@ -87,7 +87,12 @@
 <script>
 import DataTableCurrencyCell from "./tools/DataTableCurrencyCell.vue";
 export default {
-  props: ["currencylist", "gametypelist"],
+  props: [
+    "currencylist",
+    "gametypelist",
+    "opencurrencylist",
+    "opengametypelist"
+  ],
   mounted() {
     // console.log(this.data);
     // console.log(typeof this.data);
@@ -118,37 +123,41 @@ export default {
       },
       columns: [
         { name: "id", label: "Id", orderable: true },
-        { name: "gameType", label: "Game Type", orderable: true },
-        { name: "currency", label: "currency", orderable: true },
+        {
+          name: "gameType",
+          label: "Game Type",
+          orderable: true,
+          transform: ({ data, name }) => `${this.gametypelist[data[name]]}`
+        },
+        {
+          name: "currency",
+          label: "currency",
+          orderable: true,
+          transform: ({ data, name }) => `${this.currencylist[data[name]]}`
+        },
         { name: "betsDay", label: "Bets Day", orderable: true },
         { name: "count", label: "Count", orderable: true },
         {
-          name: "allAmount",
-          label: "All Amount",
+          name: "allStake",
+          label: "Stake",
           orderable: true,
           transform: ({ data, name }) =>
             "$ " + new Intl.NumberFormat().format(data[name])
         },
         {
-          name: "allPayout",
-          label: "All Payout",
+          name: "allWinning",
+          label: "Winning",
           orderable: true,
           transform: ({ data, name }) =>
             "$ " + new Intl.NumberFormat().format(data[name])
         },
         {
-          name: "allProfit",
-          label: "All Profit",
+          name: "allGGR",
+          label: "GGR",
           orderable: true,
           transform: ({ data, name }) =>
             "$ " + new Intl.NumberFormat().format(data[name])
         }
-        // ,{
-        //   name: "allProfit",
-        //   label: "All Profit",
-        //   orderable: true,
-        //   component: DataTableCurrencyCell
-        // }
       ]
     };
   }

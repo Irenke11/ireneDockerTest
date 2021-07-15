@@ -14,4 +14,13 @@ class currency extends Model
         $query = currency::select("id")->where("status","=",1)->get();
         return $query;
     }
+
+    public static function getOpenCurrencyArray(){
+        $request["currencyList"]=config('setting.currency');
+        $request["openCurrencyList"]=json_decode(currency::getOpenCurrency(),true);
+        foreach ($request["openCurrencyList"] as $key => $value) {
+           $query[$value["id"]]=$request["currencyList"][$value["id"]];
+        }
+        return $query;
+    }
 }

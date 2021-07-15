@@ -41,10 +41,9 @@
                     <select
                       v-model="tableFilters.filters.currency"
                       class="form-control">
-                      <!-- <option value>  {{ config('base.currency.1') }}</option> -->
                       <option value>Currency</option>
-                      <option v-for="currency in data" :value="currency">
-                        {{currency}}</option>
+                      <option v-for="id in opencurrencylist" :value="id['id']">
+                        {{data[id['id']]}}</option>
                     </select>
                   </div>
                 </div>
@@ -60,7 +59,7 @@
 <script>
 import Buttonexp from "./tools/button.vue";
 export default {
-  props: ["data"],
+  props: ["data","opencurrencylist"],
   mounted() {
     // console.log(this.data);
   },
@@ -79,7 +78,7 @@ export default {
         { name: "account", label: "Account", orderable: true },
         { name: "name", label: "Name", orderable: true },
         { name: "currency", label: "Currency", orderable: true,
-          // transform: ({ data, name }) => `${ config('setting.currency.' + data[name]) }` 
+          transform: ({ data, name }) => `${this.data[data[name]]}` 
         },
         {
           name: "status",

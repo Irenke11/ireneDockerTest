@@ -38,7 +38,7 @@ Vue.component('addplayer-content', require('./backend/addPlayer.vue').default);
 //games
 Vue.component('games-content', require('./backend/games.vue').default);
 Vue.component('editgame-content', require('./backend/editGame.vue').default);
-Vue.component('addgame-content', require('./backend/addGame.vue').default);
+// Vue.component('addgame-content', require('./backend/addGame.vue').default);
 //bets
 Vue.component('bets-content', require('./backend/bets.vue').default);
 //dailyBets

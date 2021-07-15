@@ -124,6 +124,7 @@
         </nav>
 
         <main class="py-4">
+             <!-- {{ __('base.gameType.1') }} -->
             @yield('content')
         </main>
     </div>

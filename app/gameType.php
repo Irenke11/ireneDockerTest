@@ -14,4 +14,12 @@ class gameType extends Model
         $query = gameType::select("id")->where("status","=",1)->get();
         return $query;
     }
+    public static function getOpenGameTypeArray(){
+        $request["gametypeList"]=config('setting.gametype');
+        $request["openGameTypeList"]=json_decode(gameType::getOpenGameType(),true);
+        foreach ($request["openGameTypeList"] as $key => $value) {
+           $query[$value["id"]]=$request["gametypeList"][$value["id"]];
+        }
+        return $query;
+    }
 }

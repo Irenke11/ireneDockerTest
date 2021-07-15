@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->everyThirtyMinutes();
         // 
-        // $schedule->command('dailyBets')->everyMinute();
+        $schedule->command('dailyBets')->everyMinute();
         // $schedule->call(function () {
         //     // $day =   date("Y/m/d H:i:s");
         //     // error_log($day);

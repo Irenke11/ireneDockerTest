@@ -14,6 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Validation\ValidationException;
+use App\gameType;
 
 class GamesController extends Controller
 {
@@ -25,6 +26,7 @@ class GamesController extends Controller
     public function index(Request $request)
     {
         $request["gametypeList"]=config('setting.gametype');
+        $request["openGameTypeList"]=gameType::getOpenGameType();
         return view('backend.games',$request);
     }
 
@@ -50,6 +52,7 @@ class GamesController extends Controller
     {
         $gameId = request()->segment(count(request()->segments()));//id
         $request["gametypeList"]=config('setting.gametype');
+        $request["getOpenGameTypeList"]=gameType::getOpenGameTypeArray();
         $request["gameInfo"] = games::getInfoById($gameId);
         return view('backend.editGame',$request);
     }
@@ -57,6 +60,7 @@ class GamesController extends Controller
     public function addGame(Request $request)
     {
         $request["gametypeList"]=config('setting.gametype');
+        $request["getOpenGameTypeList"]=gameType::getOpenGameTypeArray();
         return view('backend.editGame',$request);
     }
     

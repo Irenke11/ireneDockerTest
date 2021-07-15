@@ -36,12 +36,9 @@
                       class="form-control"
                     >
                       <option value>Game Type</option>
-                      <option v-for="gametype in data" :value="gametype">{{
-                        gametype
-                      }}</option>
-                      <!-- <option value="slot">Slot</option>
-                      <option value="poker">Poker</option>
-                      <option value="fish">Fish</option> -->
+                      <option v-for="id in opengametypelist" :value="id['id']">
+                        {{data[id['id']]}}
+                      </option>
                     </select>
                   </div>
                   <div class="col col-md-4">
@@ -64,7 +61,7 @@
 <script>
 import Buttonexp from "./tools/button.vue";
 export default {
-  props: ["data"],
+  props: ["data", "opengametypelist"],
   mounted() {
     // console.log(this.data)
     // console.log(typeof this.data);
@@ -81,7 +78,9 @@ export default {
       },
       columns: [
         { name: "gameId", label: "Id", orderable: true },
-        { name: "gameType", label: "Type", orderable: true },
+        { name: "gameType", label: "Type", orderable: true,
+          transform: ({ data, name }) => `${this.data[data[name]]}`
+        },
         {
           name: "gameNameEn",
           label: "Name English",

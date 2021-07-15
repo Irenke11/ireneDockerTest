@@ -60,7 +60,7 @@ php artisan migrate:rollback 重置
 php artisan db:seed --class=PlayersSeeder 
 php artisan db:seed --class=BetsSeeder 
 php artisan make:model dailyBets --all 可以用这个一次全健好
-<players-content :data="{{ $searchPlayerInfo }}"></players-content> 寫法
+
 ------排程----- 
 * * * * * cd /laravel-nginx-mysql-docker && php artisan schedule:run >> /dev/null 2>&1
 * * * * * php /laravel-nginx-mysql-docker/artisan schedule:run >> /dev/null 2>&1
@@ -72,11 +72,10 @@ php artisan crontab -e 編輯排程
 php artisan schedule:list  列表
 php artisan schedule:run
 ------排程----- 
+
 laravelnginxmysqldocker_php_1
 docker exec -it laravelnginxmysqldocker_php_1 bash
 docker exec -it irenedockertest_php_1 bash
-docker logs -f slot-wagersinfo-client-6bc54dfc7f-qslsj
-
 docker run --name=laravelnginxmysqldocker_scheduler_1 -d -it laravelnginxmysqldocker_scheduler_1 bash
 
 php artisan migrate

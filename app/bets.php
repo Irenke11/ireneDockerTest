@@ -11,8 +11,9 @@ class bets extends Model
     protected $fillable = [
         'gameId',
         'playerId',
-        'amount',
-        'payout',
+        'stake',
+        'winning',
+        'GGR',
     ];
 
     public static function getAllInfo($sortBy, $orderBy,$searchValue){

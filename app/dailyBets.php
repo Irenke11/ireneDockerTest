@@ -14,9 +14,9 @@ class dailyBets extends Model
         'gameType',
         'betsDay',
         'count',
-        'allAmount',
-        'allPayout',
-        'allProfit',
+        'allStake',
+        'allWinning',
+        'allGGR',
     ];
     
     public static function getAllInfo($sortBy, $orderBy, $searchValue){
@@ -53,9 +53,9 @@ class dailyBets extends Model
         
         $dailyBets= Bets::select(
                         DB::raw('count(*) as count'),
-                        DB::raw('SUM(amount) as allAmount'),
-                        DB::raw('SUM(payout) as allPayout'),
-                        DB::raw('SUM(amount)-SUM(payout) as allProfit')
+                        DB::raw('SUM(stake) as allStake'),
+                        DB::raw('SUM(winning) as allWinning'),
+                        DB::raw('SUM(stake)-SUM(winning) as allGGR')
                     )->whereBetween('betTime', [$dayTime["startTime"],$dayTime["endTime"]])->where('gameType', "=", $gameType)->where('currency', '=', $currency)->first();
         // print("<pre>".print_r($dailyBets,true)."</pre>");
         return $dailyBets;
@@ -64,9 +64,9 @@ class dailyBets extends Model
         
         $dailyBets= Bets::select(
                         DB::raw('count(*) as count'),
-                        DB::raw('SUM(amount) as allAmount'),
-                        DB::raw('SUM(payout) as allPayout'),
-                        DB::raw('SUM(amount)-SUM(payout) as allProfit')
+                        DB::raw('SUM(stake) as allStake'),
+                        DB::raw('SUM(winning) as allWinning'),
+                        DB::raw('SUM(stake)-SUM(winning) as allGGR')
                     )->whereBetween('betTime', [$dayTime["startTime"],$dayTime["endTime"]])
                     ->where('currency', '=', $currency)
                     ->first();
@@ -80,9 +80,9 @@ class dailyBets extends Model
         $Schedule->betsDay   = $request->betsDay;
         $Schedule->currency  = $request->currency;
         $Schedule->count     = $request->count ?? 0;
-        $Schedule->allAmount = $request->allAmount ?? 0;
-        $Schedule->allPayout = $request->allPayout ?? 0;
-        $Schedule->allProfit = $request->allProfit ?? 0;
+        $Schedule->allStake  = $request->allStake ?? 0; 
+        $Schedule->allWinning= $request->allWinning ?? 0;
+        $Schedule->allGGR    = $request->allGGR ?? 0;
         $Schedule->save();
         // print("<pre>".print_r($Schedule,true)."</pre>");
     }
@@ -92,9 +92,9 @@ class dailyBets extends Model
         $Schedule->betsDay   = $request->betsDay;
         $Schedule->currency  = $request->currency;
         $Schedule->count     = $request->count ?? 0;
-        $Schedule->allAmount = $request->allAmount ?? 0;
-        $Schedule->allPayout = $request->allPayout ?? 0;
-        $Schedule->allProfit = $request->allProfit ?? 0;
+        $Schedule->allStake  = $request->allStake ?? 0;
+        $Schedule->allWinning= $request->allWinning ?? 0;
+        $Schedule->allGGR    = $request->allGGR ?? 0;
         $Schedule->save();
     }
 

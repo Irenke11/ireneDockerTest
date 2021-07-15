@@ -14,6 +14,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Validation\ValidationException;
+use App\gameType;
+use App\currency;
 
 class DailyBetsController extends Controller
 {
@@ -25,7 +27,9 @@ class DailyBetsController extends Controller
     public function index(Request $request)
     {
         $request["currencyList"]=config('setting.currency');
+        $request["openCurrencyList"]=currency::getOpenCurrencyArray();
         $request["gametypeList"]=config('setting.gametype');
+        $request["openGameTypeList"]=gameType::getOpenGameTypeArray();
         return view('backend.dailyBets',$request);
     }
 
