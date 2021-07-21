@@ -57,8 +57,15 @@ class games extends Model
         return $query;
     }
 
+    public static function getOpenGames(){
+        $query = Games::select("gameId")->pluck('gameId');
+        return $query;
+    }
+
     public static function getAll(){
         $query = Games::all();
         return $query;
     }
+    
+
 }

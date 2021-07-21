@@ -8,10 +8,14 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import DataTable from 'laravel-vue-datatable'
-
+// import DateRangePicker from 'vue2-daterange-picker'
+// import Chart from 'chart.js'
+// import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+// Vue.use(Chart)
 Vue.use(DataTable);
+// Vue.use(DateRangePicker);
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -41,8 +45,11 @@ Vue.component('editgame-content', require('./backend/editGame.vue').default);
 // Vue.component('addgame-content', require('./backend/addGame.vue').default);
 //bets
 Vue.component('bets-content', require('./backend/bets.vue').default);
+Vue.component('barchart-content', require('./backend/barChart.vue').default);
 //dailyBets
 Vue.component('dailybets-content', require('./backend/dailyBets.vue').default);
+//charjs
+Vue.component('line-chart', require('./backend/components/Chart.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

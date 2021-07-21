@@ -72,6 +72,9 @@
                                 <a class="dropdown-item" href="{{ route('allBets') }}">
                                     {{ __('bets Management') }}
                                 </a>
+                                <a class="dropdown-item" href="{{ route('barChart') }}">
+                                    {{ __('Bar Chart') }}
+                                </a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">

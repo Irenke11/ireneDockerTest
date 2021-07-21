@@ -49,6 +49,8 @@ Route::prefix('games')->group(function () {
 Route::prefix('bets')->group(function () {
     Route::get('all', [BetsController::class, 'index'])->name('allBets');//页面显示
     Route::get('allData', [BetsController::class, 'allData'])->name('allData');//遊戲數據API+查询
+    Route::get('barChart', [BetsController::class, 'barChart'])->name('barChart');//view
+    Route::post('barChartData', [BetsController::class, 'barChartData'])->name('barChartData');//遊戲數據API
     // Route::post('/POST/addBet', [BetsController::class, 'addBet'])->name('addBet');//新增
     // Route::post('/POST/searchBets', [BetsController::class, 'index'])->name('searchBets'); //查询
     // Route::get('/GET/bets/{time}/{bureauNo}', [BetsController::class, 'index'])->name('bets');//页面显示+查询

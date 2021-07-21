@@ -10,6 +10,12 @@ class currency extends Model
         $query = currency::all();
         return $query;
     }
+
+    public static function getCurrencyById($id){
+        $query = currency::where("id","=",$id)->first();
+        return $query;
+    }
+
     public static function getOpenCurrency(){
         $query = currency::select("id")->where("status","=",1)->get();
         return $query;

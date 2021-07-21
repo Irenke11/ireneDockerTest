@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use DB;
 class bets extends Model
 {
     protected $table = 'bets';
@@ -20,7 +21,7 @@ class bets extends Model
         $query = Bets::orderBy($sortBy, $orderBy)
                         ->distinct();
         if (!isset($searchValue["datepicker"])) {
-            $searchValue["datepicker"] = Carbon::today(); 
+            $searchValue["datepicker"] = Carbon::now()->toDateString();
         } 
         if (isset($searchValue["startTime"]) & isset($searchValue["endTime"])) {
             $query->whereBetween('betTime', [$searchValue["datepicker"]." ".$searchValue["startTime"], $searchValue["datepicker"].' '.$searchValue["endTime"]]);
@@ -41,9 +42,33 @@ class bets extends Model
         }
         return $query;
     }
-    //   public static function getLastInsertId(){
-    //     $id = "SELECT LAST_INSERT_ID() INTO yourTableName;"
-    //     return $id;
-    //   }
 
+    public static function getDataByTime($request){
+        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59'])->select(
+            "gameId",
+            "gameName",
+            DB::raw('count(gameId) as count')
+        )->groupBy('gameId',"gameName")->get();
+        return $query;
+    }
+
+    public static function getStakeByTime($request){
+        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59'])->select(
+            "gameId",
+            "gameName",
+            DB::raw('sum(stake*rate) as stake')
+        )->groupBy('gameId',"gameName")->get();
+        return $query;
+    }
+
+    public static function getGGRByTime($request){
+        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59'])->select(
+            "gameId",
+            "gameName",
+            DB::raw('sum(GGR*rate) as GGR')
+        )->groupBy('gameId',"gameName")->get();
+        // print("<pre>".print_r($query,true)."</pre>");
+        return $query;
+    }
+        
 }
