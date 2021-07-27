@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">Players Page</div>
           <div class="card-body">
@@ -11,6 +11,7 @@
               order-by="playerId"
               :filters="filters"
               order-dir="desc"
+              :per-page="perpage"
             >
               <div slot="filters" slot-scope="{ tableFilters, perPage }">
                 <div class="row mb-2">
@@ -40,10 +41,12 @@
                   <div class="col">
                     <select
                       v-model="tableFilters.filters.currency"
-                      class="form-control">
+                      class="form-control"
+                    >
                       <option value>Currency</option>
                       <option v-for="id in opencurrencylist" :value="id['id']">
-                        {{data[id['id']]}}</option>
+                        {{ data[id["id"]] }}</option
+                      >
                     </select>
                   </div>
                 </div>
@@ -59,7 +62,7 @@
 <script>
 import Buttonexp from "./tools/button.vue";
 export default {
-  props: ["data","opencurrencylist"],
+  props: ["data", "opencurrencylist"],
   mounted() {
     // console.log(this.data);
   },
@@ -73,12 +76,16 @@ export default {
       filters: {
         currency: ""
       },
+      perpage: ["100", "250", "500"],
       columns: [
         { name: "playerId", label: "Id", orderable: true },
         { name: "account", label: "Account", orderable: true },
         { name: "name", label: "Name", orderable: true },
-        { name: "currency", label: "Currency", orderable: true,
-          transform: ({ data, name }) => `${this.data[data[name]]}` 
+        {
+          name: "currency",
+          label: "Currency",
+          orderable: true,
+          transform: ({ data, name }) => `${this.data[data[name]]}`
         },
         {
           name: "status",
@@ -98,9 +105,23 @@ export default {
           },
           transform: ({ data, name }) => `${data["playerId"]}`,
           event: "click",
-          handler: this.displayRow,
+          handler: this.edit,
           component: Buttonexp
         }
+        // ,{
+        //   label: "Bet",
+        //   name: "Bet",
+        //   orderable: false,
+        //   classes: {
+        //     btn: true,
+        //     "btn-primary": true,
+        //     "btn-sm": true
+        //   },
+        //   transform: ({ data, name }) => `${data["playerId"]}`,
+        //   event: "click",
+        //   handler: this.Bet,
+        //   component: Buttonexp
+        // }
       ]
     };
   },
@@ -109,9 +130,13 @@ export default {
     Buttonexp
   },
   methods: {
-    displayRow(data) {
+    edit(data) {
       // alert(`You clicked row ${data["gameId"]}`);
       location.href = "edit/" + data["playerId"];
+    },
+    Bet(data) {
+      // alert(`You clicked row ${data["gameId"]}`);
+      location.href = "/bets/all?playerId=" + data["playerId"];
     }
   }
 };

@@ -24,8 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.3",
         "bootstrap-vue": "^2.21.2",
         "chart.js": "^2.9.4",
+        "chartjs-plugin-datalabels": "^2.0.0",
         "laravel-vue-datatable": "^0.6.0",
         "vue-chartjs": "^3.5.1",
         "vue2-daterange-picker": "^0.6.5"

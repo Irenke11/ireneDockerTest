@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">Daily Bets Page</div>
           <div class="card-body">
@@ -11,6 +11,7 @@
               order-by="id"
               :filters="filters"
               order-dir="desc"
+              :per-page="perpage"
             >
               <div slot="filters" slot-scope="{ tableFilters, perPage }">
                 <div class="row mb-2">
@@ -121,6 +122,7 @@ export default {
         currency: "",
         gametype: ""
       },
+      perpage: ["100", "250", "500"],
       columns: [
         { name: "id", label: "Id", orderable: true },
         {

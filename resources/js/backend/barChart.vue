@@ -1,42 +1,91 @@
 <template>
   <div id="app">
-     <div class="container">
-        <div class="row justify-content-center">
+    <div class="container-fluid">
+      <div class="col justify-content-center">
+        <b-form class="row">
+          <!-- <div class="col"> -->
+          <!-- <label for="">Time range: </label> -->
+          <!-- <date-range-picker
+                v-model="form.dateRange"
+                :locale-data="{ format: 'yyyy-mm-dd' }"
+                :autoApply="autoApply"
+              >
+              </date-range-picker> -->
           <div class="col">
-            <div class="row">
-              <b-form class="pr-3">
-                <label for="">Time: </label>
-                <date-range-picker
-                  v-model="dateRange"
-                  :locale-data="{ format: 'yyyy-mm-dd' }"
-                  :maxDate="new Date()"
-                  :autoApply="autoApply"
-                ></date-range-picker>
-
-                <b-button @click="onSubmit" type="button"  class="" variant="primary">Submit</b-button>
-              </b-form>
-
-              <select v-model="chartdataloaded" class="">
-                <option v-for="(item, index) in test" :key="index" :value="item">
-                  {{ item["datasets"][0]["label"] }}
-                </option>
-              </select>
-              
-            </div>
-
-            <div id="Chart">
-              <Chart v-if="chart_loaded" :chart-data="chartdataloaded" />
-            </div>
-
-            <div id="Pie">
-              <Pie v-if="chart_loaded" :chart-data="chartdataloaded" />
-            </div>
-
-            <div v-if="noData">
-              <p>No data</p>
-            </div>
+            <b-form-datepicker
+              v-model="form.dateRange.startDate"
+              id="datepicker"
+              locale="en"
+              class="mb-2"
+              today-button
+              reset-button
+              close-button
+              :max="form.max"
+            ></b-form-datepicker>
           </div>
-        </div>
+          ~
+          <div class="col">
+            <b-form-datepicker
+              v-model="form.dateRange.endDate"
+              id="datepicker2"
+              locale="en"
+              class="mb-2"
+              today-button
+              reset-button
+              close-button
+              :max="form.max"
+            ></b-form-datepicker>
+          </div>
+          <!-- </div> -->
+          <div class="col">
+            <select v-model="form.currency" class="form-control">
+              <option value>Currency</option>
+              <option
+                v-for="(currency, index) in opencurrencylist"
+                :value="index"
+                >{{ currency }}</option
+              >
+            </select>
+          </div>
+          <div class="col">
+            <select v-model="form.gametype" class="form-control">
+              <option value>Game Type</option>
+              <option
+                v-for="(gametype, index) in opengametypelist"
+                :value="index"
+                >{{ gametype }}</option
+              >
+            </select>
+          </div>
+          <div class="col">
+            <b-button
+              @click="onSubmit"
+              type="button"
+              class="col "
+              variant="primary"
+              >Submit</b-button
+            >
+          </div>
+          <div class="col">
+            <select v-model="chartdataloaded" class="form-control">
+              <option v-for="(item, index) in test" :key="index" :value="item">
+                {{ item["datasets"][0]["select"] }}
+              </option>
+            </select>
+          </div>
+        </b-form>
+      </div>
+      <div id="Chart">
+        <Chart v-if="chart_loaded" :chart-data="chartdataloaded" />
+      </div>
+      <!-- 圓餅圖 -->
+      <!-- <div id="Pie">
+              <Pie v-if="chart_loaded" :chart-data="chartdataloaded" />
+            </div> -->
+      <!-- 圓餅圖 -->
+      <div v-if="noData">
+        <p>No data</p>
+      </div>
     </div>
   </div>
 </template>
@@ -45,9 +94,14 @@ import Chart from "./components/Chart.vue";
 import Pie from "./components/Pie.vue";
 import DateRangePicker from "vue2-daterange-picker";
 import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
+
 export default {
-  // extends: Line,
-  props: ["startdate", "enddate"],
+  props: [
+    "currencylist",
+    "gametypelist",
+    "opencurrencylist",
+    "opengametypelist"
+  ],
   name: "App",
   components: {
     Chart,
@@ -61,13 +115,21 @@ export default {
     var yyyy = today.getFullYear();
     today = String(yyyy + "-" + mm + "-" + dd);
     return {
-      chart_loaded: true /* 圖表讀取 */,
-      dateRange: {
-        startDate: today,
-        endDate: today,
-        max: today,
+      filters: {
+        currency: "",
+        gametype: ""
       },
-      autoApply:true,
+      chart_loaded: true /* 圖表讀取 */,
+      form: {
+        dateRange: {
+          startDate: today + " 00:00:00",
+          endDate: today + " 23:59:59",
+          max: today
+        },
+        currency: "",
+        gametype: ""
+      },
+      autoApply: true,
       chartData: {
         Books: 24,
         Magazine: 30,
@@ -75,7 +137,7 @@ export default {
       },
       noData: false,
       chartdataloaded: {},
-      test: [ 
+      test: [
         // {
         //   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         //   datasets: [
@@ -94,33 +156,22 @@ export default {
   },
   mounted() {
     this.onSubmit();
-    // this.renderChart(this.chartData, this.options);
   },
   methods: {
     onSubmit(event) {
-      // event.preventDefault();
-      // alert(JSON.stringify(this.dateRange));
       const vm = this;
       axios
-        .post("/bets/barChartData", this.dateRange)
+        .post("/bets/barChartData", this.form)
         .then(function(response) {
-          // alert(JSON.stringify(response.data.dateRange));
-          // console.log(response.data);
-          vm.noData=response.data.noData;
+          vm.noData = response.data.noData;
           vm.chartdataloaded = response.data.chartdataloaded;
           vm.test = response.data.test;
         })
         .catch(error => {
           // 请求失败处理
-          console.log(error + "111111111 error !!!!!!!");
+          console.log(error + "!  error !");
         });
     }
-    // dateFormat(classes, date) {
-    //   if (!classes.disabled) {
-    //     classes.disabled = date.getTime() < new Date();
-    //   }
-    //   return classes;
-    // }
   }
 };
 </script>
@@ -130,11 +181,11 @@ export default {
   /* font-family: "Avenir", Helvetica, Arial, sans-serif; */
   /* -webkit-font-smoothing: antialiased; */
   /* -moz-osx-font-smoothing: grayscale; */
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
   /* margin-top: 60px; */
 }
-.calendars{
+.calendars {
   flex-wrap: nowrap !important;
 }
 </style>

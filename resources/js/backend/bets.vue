@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">Bets Page</div>
           <div class="card-body">
@@ -11,6 +11,7 @@
               order-by="betId"
               :filters="filters"
               order-dir="desc"
+              :per-page="perpage"
             >
               <div slot="filters" slot-scope="{ tableFilters, perPage }">
                 <div class="row mb-2">
@@ -123,6 +124,7 @@ export default {
         betId: "",
         playerId: ""
       },
+      perpage: ["100", "250", "500"],
       columns: [
         { name: "betId", label: "Bet Id", orderable: true },
         { name: "bureauNo", label: "Bureau No", orderable: true },

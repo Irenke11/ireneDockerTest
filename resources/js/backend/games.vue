@@ -2,7 +2,7 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">Games Page</div>
           <div class="card-body">
@@ -12,6 +12,7 @@
               order-by="gameId"
               :filters="filters"
               order-dir="desc"
+              :per-page="perpage"
             >
               <div slot="filters" slot-scope="{ tableFilters, perPage }">
                 <div class="row mb-2">
@@ -37,7 +38,7 @@
                     >
                       <option value>Game Type</option>
                       <option v-for="id in opengametypelist" :value="id['id']">
-                        {{data[id['id']]}}
+                        {{ data[id["id"]] }}
                       </option>
                     </select>
                   </div>
@@ -76,9 +77,13 @@ export default {
       filters: {
         gameType: ""
       },
+      perpage: ["100", "250", "500"],
       columns: [
         { name: "gameId", label: "Id", orderable: true },
-        { name: "gameType", label: "Type", orderable: true,
+        {
+          name: "gameType",
+          label: "Type",
+          orderable: true,
           transform: ({ data, name }) => `${this.data[data[name]]}`
         },
         {

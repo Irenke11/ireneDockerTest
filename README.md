@@ -58,8 +58,12 @@ composer require jamesdordoy/laravelvuedatatable
 php artisan migrate  建立
 php artisan migrate:rollback 重置
 php artisan db:seed --class=PlayersSeeder 
+php artisan db:seed --class=GamesSeeder 
 php artisan db:seed --class=BetsSeeder 
 php artisan make:model dailyBets --all 可以用这个一次全健好
+php artisan make:model timeTest
+php artisan make:factory timeTestFactory --model=timeTest
+php artisan make:test playerTest --unit
 
 ------排程----- 
 * * * * * cd /laravel-nginx-mysql-docker && php artisan schedule:run >> /dev/null 2>&1
@@ -81,3 +85,4 @@ docker run --name=laravelnginxmysqldocker_scheduler_1 -d -it laravelnginxmysqldo
 php artisan migrate
 php artisan db:seed
 php artisan command:dailyBets
+php artisan test

@@ -11,6 +11,7 @@ import DataTable from 'laravel-vue-datatable'
 // import DateRangePicker from 'vue2-daterange-picker'
 // import Chart from 'chart.js'
 // import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 // Vue.use(Chart)

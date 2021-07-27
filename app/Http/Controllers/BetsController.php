@@ -15,6 +15,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\MessageBag;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Validation\ValidationException;
+use App\gameType;
 use App\currency;
 use Carbon\Carbon;
 class BetsController extends Controller
@@ -49,41 +50,58 @@ class BetsController extends Controller
 
     public function barChart(Request $request)
     {
-        // $request["startDate"]= $request->input('startDate')?? date("Y-m-d", strtotime('-2 days'));
-        // $request["endDate"]= $request->input('endDate')?? date("Y-m-d");
-        // $getOpenGames=json_decode(Games::getOpenGames($request),true);
-        // $getDataByTime=json_decode(bets::getDataByTime($request),true);
-        // dd($getOpenGames,$getDataByTime);
+        $request["currencyList"]=config('setting.currency');
+        $request["openCurrencyList"]=currency::getOpenCurrencyArray();
+        $request["gametypeList"]=config('setting.gametype');
+        $request["openGameTypeList"]=gameType::getOpenGameTypeArray();
+        $request["statDate"]= $request->input('startDate')?? date("Y-m-d", strtotime('-10 days'));
+        $request["endDate"]= $request->input('endDate')?? date("Y-m-d");
        return view('backend.barChart',$request);
+    }
+
+    public function randColor()
+    {
+        $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+        $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
+        return $color; 
     }
 
     public function barChartData(Request $request)
     {
         $count=[];
+        $count11=[];
         $responseArray=[];
         $stake=[];
         $GGR=[];
         $setting1=[];
         $setting2=[];
         $setting3=[];
-        $request["startDate"]= $request->input('startDate')?? date("Y-m-d", strtotime('-2 days'));
-        $request["endDate"]= $request->input('endDate')?? date("Y-m-d");
+        $setting11=[];
+        $setting22=[];
+        $setting33=[];
+
+        $request["gametype"]=$request->input('gametype');
+        $request["currency"]=$request->input('currency');
+        $request["startDate"]= $request->input('dateRange.startDate')?? date("Y-m-d", strtotime('-1 days'));
+        $request["endDate"]= $request->input('dateRange.endDate')?? date("Y-m-d");
+
         $responseArray["dateRange"]["startDate"]=$request["startDate"];
         $responseArray["dateRange"]["endDate"]=$request["endDate"];
+
         $getOpenGames=json_decode(Games::getOpenGames($request),true);
         
         $getDataByTime=json_decode(bets::getDataByTime($request),true);
+ 
         foreach ($getDataByTime as $key => $value) {
             if(in_array($value["gameId"], $getOpenGames)){
                 $count[]=$value["count"];
                 $setting1["labels"][]=$value["gameName"];
             }
-         
         }
         if($getDataByTime==[]){
             $responseArray["noData"]=true;
         }
-        $getStakeByTime=json_decode(bets::getStakeByTime($request),true);
+        $getStakeByTime=bets::getStakeByTime($request);
         foreach ($getStakeByTime as $key => $value) {
             if(in_array($value["gameId"], $getOpenGames)){
                 $stake[]=round($value["stake"],2);
@@ -97,31 +115,64 @@ class BetsController extends Controller
                 $setting3["labels"][]=$value["gameName"];
             }
         }
+        // //new --getDataGroupByBetTime
+        // $getDataByTime=json_decode(bets::getDataGroupByBetTime($request),true);
+        // foreach ($getDataByTime as $key => $value) {
+        //         $count11[]=$value["count"];
+        //         $setting11["labels"][]=$value["betTime"];
+        // }
+       
+        // $setting11["datasets"][]=["data"=>$count11,
+        //                         "label"=>"Order",
+        //                         // "borderColor"=> 'red',
+        //                         "pointBackgroundColor"=> 'red',
+        //                          "backgroundColor"=>[
+        //                                             "#930000", 
+        //                                             "#AE0000", 
+        //                                             "#CE0000",
+        //                                             "#EA0000",
+        //                                             "#FF0000",
+        //                                             "#FF2D2D",
+        //                                             "#FF5151",
+        //                                             "#FF7575", 
+        //                                             "#FF9797",
+        //                                             "#FFB5B5",
+        //                                             "#FFD2D2",
+        //                                             "#FFECEC"],
+        //                         "borderWidth"=> 1,
+        //                         "pointBorderColor"=> 'white',
+        //                     ]; 
+        // $responseArray["test2"][]=$setting11;
+        // //new
+
         //單量資料
         $setting1["datasets"][]=["data"=>$count,
-                                "label"=>"單量",
-                                "borderColor"=> 'red',
+                                "label"=>$request["startDate"]."~".$request["endDate"]." Order Quantity of Game",
+                                "select"=>"Order Quantity",
+                                // "borderColor"=> 'red',
                                 "pointBackgroundColor"=> 'red',
-                                 "backgroundColor"=>'#f87979',
+                                 "backgroundColor"=>'red',
                                 "borderWidth"=> 1,
                                 "pointBorderColor"=> 'white',
                             ]; 
         $responseArray["test"][]=$setting1;
         // 下注量       
         $setting2["datasets"][]=["data"=>$stake,
-                                "label"=>"下注額(RMB)",
+                                "label"=>$request["startDate"]."~".$request["endDate"]." Betting Amount of Game (RMB)",
+                                "select"=>"Betting Amount",
                                 "borderColor"=> 'blue',
                                 "pointBackgroundColor"=> 'blue',
-                                "backgroundColor"=>'#4ba2f9',
+                                "backgroundColor"=> 'blue',
                                 "borderWidth"=> 1,
                                 "pointBorderColor"=> 'white',]; 
         $responseArray["test"][]=$setting2;
                 // 下注量       
         $setting3["datasets"][]=["data"=>$GGR,
-                                "label"=>"GGR",
+                                "label"=>$request["startDate"]."~".$request["endDate"]." Revenue",
+                                "select"=>"Revenue",
                                 "borderColor"=> 'yellow',
                                 "pointBackgroundColor"=> 'yellow',
-                                "backgroundColor"=>'#ffc107',
+                                "backgroundColor"=> 'yellow',
                                 "borderWidth"=> 1,
                                 "pointBorderColor"=> 'white',]; 
         $responseArray["test"][]=$setting3;

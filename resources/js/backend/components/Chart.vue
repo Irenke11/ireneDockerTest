@@ -1,7 +1,6 @@
 <script>
 /* Line 為引入的圖表種類（可以參考官方文件) */
 import { Bar, mixins } from "vue-chartjs";
-
 const { reactiveProp } = mixins;
 
 export default {
@@ -31,6 +30,12 @@ export default {
               }
             }
           ]
+        },
+        plugins: {
+          // Change options for ALL labels of THIS CHART
+          datalabels: {
+            color: "#36A2EB"
+          }
         }
       }
     };

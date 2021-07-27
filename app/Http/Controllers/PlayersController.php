@@ -16,7 +16,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Response;
 use App\currency;
-
+use Symfony\component\Http;
 class PlayersController extends Controller
 {
     /**
@@ -117,7 +117,8 @@ class PlayersController extends Controller
     { 
         $data["playerId"]=$request->input('playerId');
         $query=Players::restorePassword($data["playerId"]);
-        return $query;
+        // return $query;
+        return response()->noContent(Respones::HTTP_CREATED);
     }
 }
 

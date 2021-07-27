@@ -44,7 +44,14 @@ class bets extends Model
     }
 
     public static function getDataByTime($request){
-        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59'])->select(
+        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59']);
+        if (isset($request['gametype']) && $request['gametype'] ) {
+            $query=$query->where("gametype", '=', $request['gametype']);
+        }
+        if (isset($request['currency']) && $request['currency']) {
+            $query=$query->where("currency", '=', $request['currency']);
+        }   
+        $query=$query->select(
             "gameId",
             "gameName",
             DB::raw('count(gameId) as count')
@@ -53,7 +60,14 @@ class bets extends Model
     }
 
     public static function getStakeByTime($request){
-        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59'])->select(
+        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59']);
+        if (isset($request['gametype']) && $request['gametype'] ) {
+            $query=$query->where("gametype", '=', $request['gametype']);
+        }
+        if (isset($request['currency']) && $request['currency']) {
+            $query=$query->where("currency", '=', $request['currency']);
+        }  
+        $query=$query->select(
             "gameId",
             "gameName",
             DB::raw('sum(stake*rate) as stake')
@@ -62,7 +76,14 @@ class bets extends Model
     }
 
     public static function getGGRByTime($request){
-        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59'])->select(
+        $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59']);
+        if (isset($request['gametype']) && $request['gametype'] ) {
+            $query=$query->where("gametype", '=', $request['gametype']);
+        }
+        if (isset($request['currency']) && $request['currency']) {
+            $query=$query->where("currency", '=', $request['currency']);
+        }
+        $query=$query->select(
             "gameId",
             "gameName",
             DB::raw('sum(GGR*rate) as GGR')
@@ -71,4 +92,28 @@ class bets extends Model
         return $query;
     }
         
+    // public static function getDataGroupByBetTime($request){
+
+    //     $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59'])->select(
+    //         DB::raw("(DATE_FORMAT(betTime, '%Y-%m-%d')) as betTime"),
+    //         DB::raw('count(gameId) as count')
+    //     )->groupBy(DB::raw("(DATE_FORMAT(betTime, '%Y-%m-%d'))"))->get();
+    //     return $query;
+    // }
+
+    // public static function getChartData($method,$column,$request,$rate){
+    //     $query= Bets::whereBetween('betTime', [$request["startDate"].' 00:00:00', $request["endDate"].' 23:59:59']);
+    //     if (isset($request['gametype']) && $request['gametype'] ) {
+    //         $query=$query->where("gametype", '=', $request['gametype']);
+    //     }
+    //     if (isset($request['currency']) && $request['currency']) {
+    //         $query=$query->where("currency", '=', $request['currency']);
+    //     }   
+    //     $query=$query->select(
+    //         "gameId",
+    //         "gameName",
+    //         DB::raw($method'('$column') as count')
+    //     )->groupBy('gameId',"gameName")->get();
+    //     return $query;
+    // }
 }
