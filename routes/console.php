@@ -26,7 +26,9 @@ Artisan::command('inspire', function () {
 
 Artisan::command('dailyBets', function () {
     $dayTime['startTime'] = Carbon::yesterday();  //2021-07-14 00:00:00
-    $dayTime['endTime'] = Carbon::yesterday()->endOfday();  //2021-06-25 23:59:59       
+    $dayTime['endTime'] = Carbon::yesterday()->endOfday();  //2021-06-25 23:59:59      
+    // $dayTime['startTime'] = "2021-07-27 00:00:00";  //2021-07-14 00:00:00
+    // $dayTime['endTime'] = "2021-07-27 23:59:59";  //2021-06-25 23:59:59       
     $data['gameTypeList'] = gameType::getOpenGameTypeArray();//遊戲類型列表
     $data['currencyList'] = currency::getOpenCurrencyArray();//幣值
     foreach ($data['currencyList'] as $currencyNo => $currencyName ){
@@ -34,7 +36,8 @@ Artisan::command('dailyBets', function () {
             $countSchedule = DailyBets::checkSchedule($dayTime,$gameTypeNo,$currencyNo); //是否已存在
             if($countSchedule == 0 ){
                 $dailyBets = DailyBets::dailyBets($dayTime,$gameTypeNo,$currencyNo);
-                $dailyBets['betsDay']=Carbon::yesterday();
+                // $dailyBets['betsDay']=Carbon::yesterday(); 
+                $dailyBets['betsDay']=$dayTime['startTime']; 
                 $dailyBets['gameType']=$gameTypeNo;
                 $dailyBets['currency']=$currencyNo;
                 $Schedule = DailyBets::addSchedule($dailyBets);
@@ -50,6 +53,5 @@ Artisan::command('dailyBets', function () {
             $Schedule = DailyBets::addSchedule($dailyBetsAll);
         }
     }
- 
 
 });

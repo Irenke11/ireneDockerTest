@@ -72,7 +72,7 @@ class players extends Model
         $query = Players::where('playerId', '=', $playerId)->first();
         return $query;
     }
-    public static function restorePassword($playerId){
+    public static function restore($playerId){
         $query = Players::where('playerId', '=', $playerId)->first();
         $query->password  = Hash::make('123456');
         $query->save();

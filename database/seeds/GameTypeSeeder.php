@@ -11,16 +11,16 @@ class GameTypeSeeder extends Seeder
      */
     public function run()
     {
-        if(DB::table('game_types')->count() == 0){
-            DB::table('game_types')->insert([
+        if(DB::table('gameType')->count() == 0){
+            DB::table('gameType')->insert([
                 [
-                    'gameTypes' => 'slot',
+                    'gameType' => 'slot',
                 ],
                 [
-                    'gameTypes' => 'poker',
+                    'gameType' => 'poker',
                 ],
                 [
-                    'gameTypes' => 'fish',
+                    'gameType' => 'fish',
                 ],
             ]);
         } else { echo "\e[31mTable is not empty, therefore NOT "; }

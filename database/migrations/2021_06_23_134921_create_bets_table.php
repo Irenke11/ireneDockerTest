@@ -22,6 +22,7 @@ class CreateBetsTable extends Migration
             $table->decimal('stake',24, 2)->unsigned();//投注額
             $table->decimal('winning',24, 2)->unsigned();//派彩
             $table->decimal('GGR',24, 2);//銷售額
+            $table->decimal('rate',24, 2);//銷售額
             $table->string('bureauNo', 20); //局號
             $table->tinyInteger('currency')->default(1);//幣別
             $table->dateTime('betTime')->default(DB::raw('CURRENT_TIMESTAMP'));//下注時間

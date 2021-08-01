@@ -160,14 +160,14 @@ export default {
   methods: {
     restorePassword: function(event) {
       axios
-        .post("/players/restorePassword", this.form)
+        .post("/players/restorePassword",["playerId"=>this.playerinfo.playerId])
         .then(result => {
-          this.errors = {
-            account: false,
-            name: false,
-            currency: false,
-            password: false
-          };
+          // this.errors = {
+          //   account: false,
+          //   name: false,
+          //   currency: false,
+          //   password: false
+          // };
           alert(this.form.account + " restorePassword success");
         })
         .catch(error => {

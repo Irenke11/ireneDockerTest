@@ -13,10 +13,10 @@ class CreateGameTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('gameTypes', function (Blueprint $table) {
+        Schema::create('gameType', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('status')->default(1);
-            $table->string('gameTypes',10);
+            $table->string('gameType',10);
         });
     }
 
@@ -27,6 +27,6 @@ class CreateGameTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gameTypes');
+        Schema::dropIfExists('gameType');
     }
 }

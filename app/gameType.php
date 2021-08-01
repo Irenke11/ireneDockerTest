@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class gameType extends Model
 {
+    protected $table = 'gameType';
+    protected $primaryKey = 'id';
+    protected $fillable = [
+        'id',
+        'status',
+        'gameType',
+    ];
     public static function getAllGameType(){
         $query = gameType::all();
         return $query;

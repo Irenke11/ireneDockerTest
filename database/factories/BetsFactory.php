@@ -20,6 +20,7 @@ $factory->define(bets::class, function (Faker $faker) {
     $winning = $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 500);
     $GGR = $stake - $winning;
     $rate=currency::getCurrencyById($playerslist[$no]["currency"])["rate"];
+
         return [
             'stake' => $stake,
             'winning' => $winning,
@@ -31,6 +32,6 @@ $factory->define(bets::class, function (Faker $faker) {
             'gameType' => $gameslist[$no2]->gameType,
             'playerId' => $playerslist[$no]->playerId,
             'currency' => $playerslist[$no]->currency,
-            // 'betTime' => "2021-07-12 06:36:53", //假裝時間
+            // 'betTime' => "2021-07-29 06:36:53", //假裝時間
         ];
 });

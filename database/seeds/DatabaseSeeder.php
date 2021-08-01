@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GamesSeeder::class);
         $this->call(BetsSeeder::class);
         $this->call(CurrencySeeder::class);
+        $this->call(GameTypeSeeder::class);
         // $this->call(DailyBetsSeeder::class);
     }
 }
