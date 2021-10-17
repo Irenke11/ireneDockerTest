@@ -11,6 +11,8 @@ import DataTable from 'laravel-vue-datatable'
 // import DateRangePicker from 'vue2-daterange-picker'
 // import Chart from 'chart.js'
 // import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -51,7 +53,7 @@ Vue.component('barchart-content', require('./backend/barChart.vue').default);
 Vue.component('dailybets-content', require('./backend/dailyBets.vue').default);
 //charjs
 Vue.component('line-chart', require('./backend/components/Chart.vue').default);
-
+Vue.component('user-ag-content', require('./backend/userAG.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

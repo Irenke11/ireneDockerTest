@@ -19,13 +19,13 @@ $factory->define(bets::class, function (Faker $faker) {
     $stake = $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 1000);
     $winning = $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 500);
     $GGR = $stake - $winning;
-    $rate=currency::getCurrencyById($playerslist[$no]["currency"])["rate"];
+    // $rate=currency::getCurrencyById($playerslist[$no]["currency"])["rate"];
 
         return [
             'stake' => $stake,
             'winning' => $winning,
             'GGR' => $GGR,
-            'rate' => $rate,
+            'rate' => 2,
             'bureauNo' => $playerslist[$no]->playerId.date("Ymd").$gameslist[$no2]->gameId,
             'gameName' => json_decode($gameslist[$no2]->gameName)->en,
             'gameId' => $gameslist[$no2]->gameId,

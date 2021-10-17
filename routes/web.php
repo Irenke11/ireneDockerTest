@@ -65,3 +65,8 @@ Route::prefix('dailyBets')->group(function () {
     // Route::post('/POST/searchDaily', [DailyController::class, 'index'])->name('searchDaily');
 });
 
+//玩家管理
+Route::prefix('userAG')->group(function () {
+    Route::get('all', [PlayersController::class, 'showAG'])->name('allUserAG'); //页面显示+查询
+});
+

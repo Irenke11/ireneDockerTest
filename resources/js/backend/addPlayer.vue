@@ -160,7 +160,7 @@ export default {
   methods: {
     restorePassword: function(event) {
       axios
-        .post("/players/restorePassword",["playerId"=>this.playerinfo.playerId])
+        .post("/players/restorePassword",["playerId",this.playerinfo.playerId])
         .then(result => {
           // this.errors = {
           //   account: false,

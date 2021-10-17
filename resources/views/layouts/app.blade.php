@@ -40,6 +40,16 @@
                     <ul class="navbar-nav mr-auto   d-block d-md-none d-sm-block">
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ __('User Page (AG-Grid)')  }} <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('allUserAG') }}">
+                                    {{ __('User Management(AG-Grid)') }}
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ __('Player Page')  }} <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -133,6 +143,16 @@
     <nav class="col-md-2 d-none d-md-block bg-light sidebar vh-90">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#usersManagement"  data-toggle="collapse" href="#usersManagement"
+                role="button" aria-expanded="false" aria-controls="usersManagement" >
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Users Management (AG-Grid)
+                </a>
+                <div class="collapse multi-collapse " id="usersManagement">
+                    <a class="dropdown-item" href="{{ route('allUserAG') }}">User Management(AG-Grid)</a>
+                <div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="#playerManagement"  data-toggle="collapse" href="#playerManagement"
                 role="button" aria-expanded="false" aria-controls="playerManagement" >

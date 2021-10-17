@@ -31,6 +31,13 @@ class PlayersController extends Controller
         $request["playerInfo"]= [];
         return view('backend.players',$request);
     }
+    public function showAG(Request $request)
+    {
+        $request["currencyList"]=config('setting.currency');
+        $request["openCurrencylist"]=currency::getOpenCurrency();
+        $request["playerInfo"]= [];
+        return view('backend.userAG',$request);
+    }
     public function allData(Request $request)
     {   
         $length = $request->input('length')??100;
